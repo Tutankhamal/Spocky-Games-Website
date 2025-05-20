@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     })
   }
-
+  
   // Contact Form Submission
   const contactForm = document.getElementById("contactForm")
   if (contactForm) {
@@ -243,3 +243,58 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 })
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".carousel-track");
+  const container = document.querySelector(".carousel-container");
+  let slides = Array.from(track.children);
+  const pauseTime = 2000;     // pausa após chegar ao centro
+  const slideTime = 3000;     // tempo de transição
+  let paused = false;
+  let timeout;
+
+  function activateZoom() {
+    slides.forEach(s => s.classList.remove("active"));
+    slides[0].classList.add("active");
+  }
+
+  function next() {
+    if (paused) return;
+    track.style.transition = `transform ${slideTime}ms cubic-bezier(0.77, 0, 0.175, 1)`;
+    track.style.transform = `translateX(-100%)`;
+    track.addEventListener("transitionend", onTransitionEnd, { once: true });
+  }
+
+  function onTransitionEnd() {
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    const first = slides.shift();
+    track.appendChild(first);
+    slides.push(first);
+    activateZoom();
+    timeout = setTimeout(next, pauseTime);
+  }
+
+  slides.forEach(slide => {
+    slide.querySelector("img").addEventListener("click", e => {
+      const link = e.currentTarget.dataset.link;
+      if (link) window.open(link, "_blank");
+    });
+  });
+
+  container.addEventListener("mouseenter", () => {
+    paused = true;
+    clearTimeout(timeout);
+    track.style.transition = '';
+  });
+
+  container.addEventListener("mouseleave", () => {
+    paused = false;
+    setTimeout(next, 300);
+  });
+
+  activateZoom();
+  timeout = setTimeout(next, pauseTime);
+});
