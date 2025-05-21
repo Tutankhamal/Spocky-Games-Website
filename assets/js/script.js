@@ -621,4 +621,60 @@ window.addEventListener('resize', () => {
 });
 
 
+// Pixeated effect
+document.addEventListener("DOMContentLoaded", () => {
+  const pixelatedSections = document.querySelectorAll(".pixelated");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate");
+        observer.unobserve(entry.target); // anima apenas uma vez
+      }
+    });
+  }, {
+    threshold: 0.3 // ativa quando 30% da seção estiver visível
+  });
+
+  pixelatedSections.forEach(section => {
+    observer.observe(section);
+  });
+});
+
+
+
+
+//Tetris Viewport effect
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".animated-section");
+
+  const effects = [
+    "effect-car-left",
+    "effect-car-right",
+    "effect-car-top",
+    "effect-car-bottom"
+  ];
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const section = entry.target;
+        const content = section.querySelector(".animated-content");
+
+        if (content && !content.classList.contains("animated")) {
+          const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+          section.classList.add(randomEffect);
+          content.classList.add("animated");
+        }
+
+        observer.unobserve(section); // remove se não quiser repetir
+      }
+    });
+  }, {
+    threshold: 0.4
+  });
+
+  sections.forEach(section => observer.observe(section));
+});
+
 

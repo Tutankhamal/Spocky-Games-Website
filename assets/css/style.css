@@ -227,6 +227,7 @@ main {
   width: 250px;
   height: 250px;
   transition: all 0.3s ease;
+  margin-top: 75px;
 }
 
 .hero-logo:hover {
@@ -424,6 +425,7 @@ main {
   padding: 30px;
   border: 2.5px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 
 .featured-item:hover {
@@ -465,6 +467,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !important
 }
 
 .video-card:hover {
@@ -658,6 +661,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !important
 }
 
 .product-card:hover {
@@ -1224,6 +1228,8 @@ main {
   padding: 30px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !important
+
 }
 
 .partner-card:hover {
@@ -1581,6 +1587,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  
 }
 
 .team-card:hover {
@@ -2630,3 +2637,166 @@ iframe {
       z-index: -1;
       background: #0a001f;
     }
+
+    .pixelated {
+  image-rendering: pixelated;
+  transform: scale(1.05);
+  filter: contrast(150%) brightness(120%);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.pixelated.animate {
+  transform: scale(1);
+  filter: none;
+  opacity: scroll;
+}
+
+
+html, body {
+  height: 100%;
+  scroll-snap-type: y mandatory;
+  
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* 🧱 Seções com snap (experiência tipo “tela por tela”) */
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  /* Removido: min-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* ✅ Se você ainda quiser uma seção de tela cheia, adicione essa classe extra */
+.snap-full {
+  min-height: 100vh;
+}
+
+/* 🛑 Última snap-section: reduzida para permitir rolagem além dela */
+.snap-section[data-last] {
+  /* Esse valor ainda pode ser usado, se desejar menor que tela cheia */
+  min-height: 90vh;
+}
+
+/* 🆓 Seção final livre (ex: banner + footer) sem snapping */
+.non-snap {
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  background: #000;
+  min-height: 40vh;
+}
+
+/* ✅ Footer com altura mínima garantida */
+footer {
+  min-height: 20vh;
+}
+
+
+
+/* Estilização da seção parceiros, caso ainda não tenha */
+.parceiros-carroussel {
+  padding-bottom: 4rem;
+  text-align: center;
+}
+
+
+
+
+/* Conteúdo inicialmente oculto */
+.animated-content {
+  opacity: 0;
+  transform: translateX(0);
+}
+
+/* Esquerda → Centro */
+.effect-car-left .animated-content {
+  animation: carBrakeLeft 1s ease-out forwards;
+}
+
+/* Direita → Centro */
+.effect-car-right .animated-content {
+  animation: carBrakeRight 1s ease-out forwards;
+}
+
+/* Cima → Centro */
+.effect-car-top .animated-content {
+  animation: carBrakeTop 1s ease-out forwards;
+}
+
+/* Baixo → Centro */
+.effect-car-bottom .animated-content {
+  animation: carBrakeBottom 1s ease-out forwards;
+}
+
+/* Keyframes para os quatro sentidos */
+@keyframes carBrakeLeft {
+  0% {
+    transform: translateX(-150vw) skewX(-12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateX(25px) skewX(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) skewX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes carBrakeRight {
+  0% {
+    transform: translateX(150vw) skewX(12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateX(-25px) skewX(-3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) skewX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes carBrakeTop {
+  0% {
+    transform: translateY(-150vh) skewY(-12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(25px) skewY(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) skewY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes carBrakeBottom {
+  0% {
+    transform: translateY(150vh) skewY(12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(-25px) skewY(-3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) skewY(0);
+    opacity: 1;
+  }
+}
+
