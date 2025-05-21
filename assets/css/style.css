@@ -425,7 +425,7 @@ main {
   padding: 30px;
   border: 2.5px solid var(--border-color);
   transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px); !impotant
 }
 
 .featured-item:hover {
@@ -577,13 +577,15 @@ main {
 
 /* Page Header */
 .page-header {
-  padding: 100px 5% 50px;
+  scroll-margin-top: var(--header-height); /* ⚠️ chave para snap */
+  padding: 80px 5% 50px;
   text-align: center;
   background-image: url('/assets/images/bg-site.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
+
 
 .page-header h1 {
   margin-bottom: 10px;
@@ -1587,6 +1589,7 @@ main {
   overflow: hidden;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !impotant
   
 }
 
@@ -1654,6 +1657,7 @@ main {
   padding: 50px;
   text-align: center;
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(4px); !impotant
 }
 
 .partner-cta h2 {
@@ -1793,6 +1797,7 @@ main {
   padding: 20px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !impotant
 }
 
 .timeline-content:hover {
@@ -1928,6 +1933,7 @@ main {
   text-align: center;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !impotant
 }
 
 .mission:hover,
@@ -1997,6 +2003,7 @@ main {
   padding: 30px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px); !impotant
 }
 
 .stat-item:hover {
@@ -2164,6 +2171,7 @@ main {
   border-radius: 10px;
   padding: 30px;
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(4px); !impotant
 }
 
 .form-group {
@@ -2674,6 +2682,10 @@ html, body {
   justify-content: center;
   padding: 2rem;
   box-sizing: border-box;
+  scroll-behavior: smooth
+}
+.snap-section::-webkit-scrollbar {
+  display: none;
 }
 
 /* ✅ Se você ainda quiser uma seção de tela cheia, adicione essa classe extra */
