@@ -2,9 +2,9 @@
 
 2 Aba dos canais paceiros
 
-3 Efitos de apresentação das seções animados.
+3 Efeitos de apresentação das seções animados.
 
-4 Efitos de rolagens aternando entre um BG fixo e BGS solidos nos blocos.
+4 Efeitos de rolagens alternando entre um BG fixo e BGS solidos nos blocos.
 
 5 Itens dos produtos deve levar a uma pagina especifica para detalhes dos produtos.
 

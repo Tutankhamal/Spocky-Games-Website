@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 
-
+  // Partenrs Carroussel close to Footer
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".carousel-track");
   const container = document.querySelector(".carousel-container");
@@ -300,6 +300,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
+  // YouTube Player
 const canalID = "UCSPC6X4M-tVPeK4IZMbK5aw"; // Substitua pelo ID do canal
   const videoBox = document.getElementById("video-box");
 
@@ -349,7 +352,7 @@ const canalID = "UCSPC6X4M-tVPeK4IZMbK5aw"; // Substitua pelo ID do canal
     });
     
     
-    
+   // Background with Pacman interactive with mouse
 const canvas = document.getElementById('retro-bg');
 const ctx = canvas.getContext('2d');
 
@@ -616,3 +619,6 @@ window.addEventListener('resize', () => {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 });
+
+
+
