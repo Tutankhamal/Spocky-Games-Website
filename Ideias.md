@@ -28,3 +28,7 @@
 8 Gameplay Br
 9 GuaxaZX - 
 
+11 Banner de parceiros maior, logo E-Cast Vermelha e banner extra para novos anunciantes.
+
+12 Scrlolling mais smooth no snap pra viewport
+
