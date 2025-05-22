@@ -32,13 +32,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+
 </head>
 <body>
+    <canvas id="retro-bg"></canvas>
     <div class="background-container"></div>
+    
     
     <header class="navbar">
         <div class="logo-container">
-            <img src="/assets/logo_nav.png" alt="Spocky Games Logo" class="logo">
+            <img src="/assets/logo_nav.png" alt="Spocky Games Logo" class="logo" >
             <h1 class="site-title"><a href="index.html">Spocky Games</a></h1>
         </div>
         
@@ -46,7 +49,7 @@
             <ul>
                 <li><a href="index.html">Início</a></li>
                 <li><a href="loja.html">Loja</a></li>
-                <li><a href="aovivo.html">Ao Vivo</a></li>
+                <li><a href="aovivo.html" >Ao Vivo</a></li>
                 <li><a href="ondemand.html" class="active">On Demand</a></li>
                 <li><a href="novidades.html">Novidades</a></li>
                 <li><a href="parceiros.html">Parceiros</a></li>
@@ -63,163 +66,110 @@
     </header>
     
     <main>
-        <section class="page-header snap-section">
+        <section class="page-header animated-section snap-section">
+            <div class="animated-content">
             <h1 class="glitch" data-text="On Demand">On Demand</h1>
             <p>Assista nossos vídeos quando quiser</p>
+            </div>
         </section>
         
-        <section class="ondemand-section snap-section">
-          <!--  <div class="filter-bar">
-                <div class="filter-group">
-                    <label for="playlist">Playlist:</label>
-                    <select id="playlist">
-                        <option value="all">Todos os Vídeos</option>
-                        <option value="gameplay">Gameplays</option>
-                        <option value="review">Reviews</option>
-                        <option value="tutorial">Tutoriais</option>
-                        <option value="speedrun">Speedruns</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="console">Console:</label>
-                    <select id="console">
-                        <option value="all">Todos</option>
-                        <option value="snes">Super Nintendo</option>
-                        <option value="genesis">Mega Drive</option>
-                        <option value="n64">Nintendo 64</option>
-                        <option value="ps1">PlayStation</option>
-                    </select>
-                </div>
-                <div class="search-bar">
-                    <input type="text" placeholder="Buscar vídeos...">
-                    <button><i class="fas fa-search"></i></button>
-                </div>
-            </div> --> 
-            
+        <section class="live-section snap-section">
+            <div class="live-container" data-aos="fade-up">
+                <div class="live-player-placeholder">
+                    
+
             <div class="video-player-container" data-aos="fade-up">
 <div id="latest-video-box">
   <p>Carregando vídeo...</p>
 </div>
+
+                </div>
+                <!--
+                <div class="live-info">
+                    <h2>Jogando Super Nintendo Classics</h2>
+                    <p class="live-description">
+                        Mateus Spocky está jogando os clássicos do Super Nintendo! Venha relembrar os jogos que marcaram época e participe do chat ao vivo.
+                    </p>
+                    <div class="live-meta">
+                        <div class="live-viewers">
+                            <i class="fas fa-eye"></i>
+                            <span>1.2K espectadores</span>
+                        </div>
+                        <div class="live-started">
+                            <i class="fas fa-clock"></i>
+                            <span>Iniciou há 1 hora e 23 minutos</span>
+                        </div>
+                    </div>
+                    <div class="live-buttons">
+                        <a href="https://youtube.com" target="_blank" class="neon-button">Assistir no YouTube</a>
+                        <button class="neon-button secondary">Receber Notificações</button>
+                    </div>
+                </div>
             </div>
-            <!--
-            <div class="video-grid">
-                <div class="video-card" data-aos="fade-up">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">15:42</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>Super Mario World - Gameplay Completo</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 12.5K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 10/05/2023</span>
-                        </p>
-                        <p class="video-description">Gameplay completo de Super Mario World para Super Nintendo com todos os segredos revelados.</p>
-                    </div>
-                </div>
-                
-                <div class="video-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">22:18</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>Sonic the Hedgehog - Speedrun</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 8.3K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 05/05/2023</span>
-                        </p>
-                        <p class="video-description">Speedrun de Sonic the Hedgehog para Mega Drive com tempo recorde.</p>
-                    </div>
-                </div>
-                
-                <div class="video-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">18:05</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>Donkey Kong Country - Segredos e Dicas</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 10.1K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 01/05/2023</span>
-                        </p>
-                        <p class="video-description">Todos os segredos e dicas para dominar Donkey Kong Country no Super Nintendo.</p>
-                    </div>
-                </div>
-                
-                <div class="video-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">25:37</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>Crash Bandicoot - Review Completo</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 9.7K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 25/04/2023</span>
-                        </p>
-                        <p class="video-description">Review detalhado de Crash Bandicoot para PlayStation 1, analisando gráficos, jogabilidade e história.</p>
-                    </div>
-                </div>
-                
-                <div class="video-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">20:14</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>The Legend of Zelda: Ocarina of Time - Parte 1</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 15.2K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 20/04/2023</span>
-                        </p>
-                        <p class="video-description">Início da jornada em The Legend of Zelda: Ocarina of Time para Nintendo 64.</p>
-                    </div>
-                </div>
-                
-                <div class="video-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="video-thumbnail">
-                        <img src="placeholder.svg?height=180&width=320" alt="Thumbnail do vídeo">
-                        <div class="video-duration">17:52</div>
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-info">
-                        <h3>Final Fantasy VII - Guia de Matérias</h3>
-                        <p class="video-meta">
-                            <span><i class="fas fa-eye"></i> 11.8K</span>
-                            <span><i class="fas fa-calendar-alt"></i> 15/04/2023</span>
-                        </p>
-                        <p class="video-description">Guia completo sobre o sistema de matérias em Final Fantasy VII para PlayStation 1.</p>
-                    </div>
-                </div>
-            </div> -->
             
-           <!-- <div class="pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#" class="next">Próximo <i class="fas fa-chevron-right"></i></a>
+            <div class="schedule-section" data-aos="fade-up">
+                <h2 class="section-title">Próximas Transmissões</h2>
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <div class="schedule-date">
+                            <div class="day">15</div>
+                            <div class="month">JUN</div>
+                        </div>
+                        <div class="schedule-info">
+                            <h3>Mega Drive Classics</h3>
+                            <p>Jogando os melhores títulos do Mega Drive</p>
+                            <div class="schedule-time">
+                                <i class="fas fa-clock"></i>
+                                <span>20:00 - 23:00</span>
+                            </div>
+                        </div>
+                        <button class="reminder-button">
+                            <i class="fas fa-bell"></i>
+                            <span>Lembrar</span>
+                        </button>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-date">
+                            <div class="day">18</div>
+                            <div class="month">JUN</div>
+                        </div>
+                        <div class="schedule-info">
+                            <h3>PlayStation 1 Raridades</h3>
+                            <p>Jogos raros e esquecidos do PlayStation 1</p>
+                            <div class="schedule-time">
+                                <i class="fas fa-clock"></i>
+                                <span>19:00 - 22:00</span>
+                            </div>
+                        </div>
+                        <button class="reminder-button">
+                            <i class="fas fa-bell"></i>
+                            <span>Lembrar</span>
+                        </button>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-date">
+                            <div class="day">22</div>
+                            <div class="month">JUN</div>
+                        </div>
+                        <div class="schedule-info">
+                            <h3>Nintendo 64 Speedruns</h3>
+                            <p>Tentando bater recordes em jogos do N64</p>
+                            <div class="schedule-time">
+                                <i class="fas fa-clock"></i>
+                                <span>20:00 - 00:00</span>
+                            </div>
+                        </div>
+                        <button class="reminder-button">
+                            <i class="fas fa-bell"></i>
+                            <span>Lembrar</span>
+                        </button>
+                    </div>
+                </div>
             </div> -->
-        </section>
-    </main>
+        </section> 
+    </main>  
     <section class="parceiros-carroussel snap-section">
   <div class="carousel-container">
     <div class="carousel-track">
@@ -233,7 +183,7 @@
         <img src="/assets/images/partnerlogos/framesgamer.png" alt="Frames Gamer" data-link="https://www.framesgamer.com.br">
       </div>
       <div class="carousel-slide">
-        <img src="/assets/images/partnerlogos/revolutionsticks.png" alt="Revolution Sticks" data-link="https://www.revolutionsticks.com.br">
+        <img src="/assets/images/partnerlogos/revolutionsticks.png" alt="Revolution Sticks" data-link="https://www.revolutionsticks.com">
       </div>
     </div>
   </div>

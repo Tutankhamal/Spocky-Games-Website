@@ -655,18 +655,22 @@ main {
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 30px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .product-card {
-  background-color: var(--card-bg-color);
+  background-color: var(--card-bg-color); /* deve conter transparência (ex: rgba(..., 0.2)) */
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
-  backdrop-filter: blur(4px) !important;
-
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); /* suporte para Safari */
 }
 
 .product-card:hover {
@@ -683,6 +687,7 @@ main {
 .product-image img {
   width: 100%;
   transition: all 0.3s ease;
+  display: block;
 }
 
 .product-card:hover .product-image img {
@@ -729,6 +734,7 @@ main {
   margin-right: 10px;
   font-size: 1rem;
 }
+
 
 .pagination {
   display: flex;
@@ -1873,6 +1879,7 @@ main {
   }
   .timeline-content {
     padding: 5px;
+    width: 140%;
   }
 }
 
@@ -1927,21 +1934,25 @@ main {
 
 .mission-vision {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* reduzido de 300px para caber 3 por linha */
   gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 .mission,
 .vision,
 .values {
-  background-color: var(--card-bg-color);
+  background-color: var(--card-bg-color); /* deve ter transparência (ex: rgba(0,0,0,0.5)) */
   border-radius: 10px;
   padding: 30px;
   text-align: center;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
-  backdrop-filter: blur(4px) !important;
-
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); /* suporte Safari */
 }
 
 .mission:hover,
@@ -1996,6 +2007,20 @@ main {
 .values p {
   color: rgba(255, 255, 255, 0.8);
 }
+
+/* Responsividade */
+@media (max-width: 1023px) {
+  .mission-vision {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .mission-vision {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 .stats-section {
   display: grid;
@@ -2756,12 +2781,7 @@ footer {
   animation: carBrakeTop 1s ease-out forwards;
 }
 
-/* Baixo → Centro */
-.effect-car-bottom .animated-content {
-  animation: carBrakeBottom 1s ease-out forwards;
-}
-
-/* Keyframes para os quatro sentidos */
+/* Keyframes para os três sentidos restantes */
 @keyframes carBrakeLeft {
   0% {
     transform: translateX(-150vw) skewX(-12deg);
@@ -2806,19 +2826,3 @@ footer {
     opacity: 1;
   }
 }
-
-@keyframes carBrakeBottom {
-  0% {
-    transform: translateY(150vh) skewY(12deg);
-    opacity: 0;
-  }
-  70% {
-    transform: translateY(-25px) skewY(-3deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0) skewY(0);
-    opacity: 1;
-  }
-}
-

@@ -644,15 +644,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-//Tetris Viewport effect
+// Tetris Viewport effect
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(".animated-section");
 
   const effects = [
     "effect-car-left",
     "effect-car-right",
-    "effect-car-top",
-    "effect-car-bottom"
+    "effect-car-top"
+    // "effect-car-bottom" removido
   ];
 
   const observer = new IntersectionObserver((entries) => {
@@ -676,5 +676,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sections.forEach(section => observer.observe(section));
 });
-
-
