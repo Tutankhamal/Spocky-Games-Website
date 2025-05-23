@@ -1586,6 +1586,7 @@ main {
 }
 
 /* Team Section */
+/* Team Section */
 .team-section {
   padding: 80px 5%;
   text-align: center;
@@ -1599,11 +1600,11 @@ main {
   justify-content: center;
   align-items: stretch;
 
-  max-width: calc(3 * 300px + 2 * 30px); /* 3 cards de 300px + 2 gaps de 30px */
+  /* Permite até 4 cards de 300px + 3 gaps de 30px = 1290px */
+  max-width: calc(4 * 300px + 3 * 30px);
   margin-left: auto;
   margin-right: auto;
 }
-
 
 .team-card {
   background-color: #1eb0bd56;
@@ -1620,13 +1621,79 @@ main {
   flex-direction: column;
 }
 
-/* Responsivo: quebra natural pelo flex-wrap + max-width */
+/* Quebra para 2 por linha em telas menores */
+@media (max-width: 992px) {
+  .team-card {
+    flex: 1 1 calc(50% - 15px);
+    max-width: calc(50% - 15px);
+  }
+}
+
+/* Quebra para 1 por linha em telas pequenas */
 @media (max-width: 600px) {
   .team-card {
     flex: 1 1 100%;
     max-width: 100%;
   }
 }
+
+/* Hover Effects */
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--cyan-glow);
+  border-color: var(--secondary-color);
+}
+
+/* Avatar */
+.team-avatar {
+  width: 200px;
+  height: 200px;
+  margin: 30px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--secondary-color);
+  transition: all 0.3s ease;
+}
+
+.team-card:hover .team-avatar {
+  transform: scale(1.05);
+  box-shadow: var(--cyan-glow);
+}
+
+.team-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text content */
+.team-info {
+  padding: 0 20px 30px;
+}
+
+.team-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.team-role {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.team-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 
 /* Hover Effects */
 .team-card:hover {
@@ -2757,7 +2824,7 @@ iframe {
 
 /* ✅ Se você ainda quiser uma seção de tela cheia, adicione essa classe extra */
 .snap-full {
-  min-height: 100vh;
+/* min-height: 100vh; */
 }
 
 /* 🛑 Última snap-section: reduzida para permitir rolagem além dela */
