@@ -2823,9 +2823,9 @@ iframe {
 }
 
 /* ✅ Se você ainda quiser uma seção de tela cheia, adicione essa classe extra */
-.snap-full {
+/* .snap-full { */
 /* min-height: 100vh; */
-}
+/* } */
 
 /* 🛑 Última snap-section: reduzida para permitir rolagem além dela */
 .snap-section[data-last] {
