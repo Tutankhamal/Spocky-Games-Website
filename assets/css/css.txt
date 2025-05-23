@@ -237,7 +237,7 @@ main {
   width: 250px;
   height: 250px;
   transition: all 0.3s ease;
-  
+  margin-top: 75px;
 }
 
 .hero-logo:hover {
@@ -433,7 +433,7 @@ main {
   background-color: var(--card-bg-color);
   border-radius: 10px;
   padding: 30px;
-  border: 1.5px solid var(--border-color);
+  border: 2.5px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
 
@@ -441,8 +441,8 @@ main {
 
 .featured-item:hover {
   transform: translateY(-10px);
-  box-shadow: var(--glow-shadow);
-  border-color: 2px solid var(--primary-color);
+  box-shadow: var(--cyan-shadow);
+  border-color: 2px solid var(--secondary-color);
     backdrop-filter: blur(4px) !important;
 }
 
@@ -1592,16 +1592,15 @@ main {
 }
 
 .team-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 50px;
-  justify-content: center;
-  align-items: stretch;
-
-  max-width: calc(3 * 300px + 2 * 30px); /* 3 cards de 300px + 2 gaps de 30px */
-  margin-left: auto;
-  margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Ajuste dinâmico das colunas */
+    gap: 30px;
+    margin-top: 50px;
+    justify-content: center; /* Centraliza os elementos na horizontal */
+    align-items: center; /* Garante alinhamento vertical correto */
+    max-width: 80vw; /* Limita a largura para evitar que se espalhem demais */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
@@ -1612,30 +1611,16 @@ main {
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
-
-  flex: 1 1 300px;
-  max-width: 300px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+max-width: 350px;
+  
 }
 
-/* Responsivo: quebra natural pelo flex-wrap + max-width */
-@media (max-width: 600px) {
-  .team-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-}
-
-/* Hover Effects */
 .team-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--cyan-glow);
   border-color: var(--secondary-color);
 }
 
-/* Avatar */
 .team-avatar {
   width: 200px;
   height: 200px;
@@ -1657,7 +1642,6 @@ main {
   object-fit: cover;
 }
 
-/* Text content */
 .team-info {
   padding: 0 20px 30px;
 }
@@ -1684,7 +1668,6 @@ main {
   justify-content: center;
   gap: 15px;
 }
-
 
 .become-partner {
   padding: 50px 5%;
@@ -1977,11 +1960,11 @@ main {
 .values {
     flex: 1; /* Faz com que todos os blocos tenham o mesmo tamanho */
     min-width: 300px; /* Garante que não fiquem muito pequenos */
-    background-color: rgba(32, 113, 160, 0.5); /* Fundo transparente */
+    background-color: rgba(0,0,0,0.5); /* Fundo transparente */
     border-radius: 10px;
     padding: 30px;
     text-align: center;
-    border: 1px solid #1dafba4f;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -1991,12 +1974,12 @@ main {
 .vision:hover,
 .values:hover {
     transform: translateY(-10px);
-    box-shadow: var(--cyan-glow);
+    box-shadow: var(--glow-shadow);
 }
 
-.mission:hover { border-color: var(--secondary-color); }
+.mission:hover { border-color: var(--primary-color); }
 .vision:hover { border-color: var(--secondary-color); }
-.values:hover { border-color: var(--secondary-color); }
+.values:hover { border-color: var(--accent-color); }
 
 .mission-icon,
 .vision-icon,
@@ -2056,7 +2039,7 @@ main {
 .stat-item {
     flex: 1; /* Garante tamanhos iguais */
     min-width: 220px; /* Define um tamanho mínimo para evitar itens muito pequenos */
-    background-color: #bcb60467; /* Mantém a transparência */
+    background-color: rgba(0, 0, 0, 0.5); /* Mantém a transparência */
     border-radius: 10px;
     padding: 30px;
     text-align: center;
@@ -2068,15 +2051,15 @@ main {
 
 .stat-item:hover {
     transform: translateY(-10px);
-    border-color: var(--accent-color);
-    box-shadow: var(--yellow-glow);
+    border-color: var(--primary-color);
+    box-shadow: var(--glow-shadow);
 }
 
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 10px;
-    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-color));
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -2746,7 +2729,8 @@ iframe {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: normal; /* mais fluido */
-
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   padding: 2rem;
   box-sizing: border-box;
@@ -2864,5 +2848,3 @@ footer {
     opacity: 1;
   }
 }
-
-

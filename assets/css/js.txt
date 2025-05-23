@@ -365,13 +365,9 @@ const rows = Math.floor(height / tileSize);
 
 // Cores CMYK com transparência equivalente a #3cc81c10
 const mazeColors = [
-  '#fb234e15', // Red
-  '#f8862215', // Orange
-  '#f0ed2115', // Yellow
-  '#47ef2115', // Green
-  '#23d6e315', // Cyan
-  '#2326e015', // Blue
-  '#a221dd15', // Mageta
+  '#00ffff10', // Cyan
+  '#ffff0010', // Yellow
+  '#ff00ff10', // Magenta
 ];
 
 // Escolhe uma cor aleatória para o labirinto
