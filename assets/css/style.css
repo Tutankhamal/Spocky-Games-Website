@@ -3036,7 +3036,7 @@ footer {
   height: 180px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid red; /* Borda padrão */
+  border: 2px solid #cf1d3f; /* Borda padrão */
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-width 0.3s ease;
 }
 
@@ -3053,14 +3053,14 @@ footer {
 .channel-slide:has(:hover) img {
   transform: scale(1.2);
   border-width: 3px;
-  box-shadow: 0 0 12px red;
+  box-shadow: 0 0 12px #cf1d3f;
   position: relative;
   z-index: 10; /* Eleva a imagem para evitar cortes */
 }
 
 .channel-slide:hover p, 
 .channel-slide:has(:hover) p {
-  text-shadow: 0 0 8px red;
+  text-shadow: 0 0 8px #cf1d3f;
 }
 
 /* 📱 Ajuste responsivo */
@@ -3089,7 +3089,7 @@ footer {
 .channel-slide:has(:hover) img {
   transform: scale(1.2);
   border-width: 3px;
-  box-shadow: 0 0 16px red; /* Glow mais intenso */
+  box-shadow: 0 0 16px #cf1d3f; /* Glow mais intenso */
   position: relative;
   z-index: 10;
 }
@@ -3097,7 +3097,7 @@ footer {
 /* 🛠 Faz o título seguir a imagem no hover */
 .channel-slide:hover p, 
 .channel-slide:has(:hover) p {
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 10px #cf1d3f;
   transform: scale(1.1) translateY(8px); /* Aumenta levemente e desce junto com a imagem */
 }
 
@@ -3112,6 +3112,6 @@ footer {
 /* 🔥 Agora o título acompanha a imagem de forma gradual */
 .channel-slide:hover p, 
 .channel-slide:has(:hover) p {
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 10px #cf1d3f;
   transform: scale(1.08) translateY(4px); /* 🛠 Movimentação mais sutil e fluida */
 }
