@@ -680,3 +680,97 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sections.forEach(section => observer.observe(section));
 });
+
+
+
+
+// Partner Channers Carroussel
+
+const partnerData = [
+  { name: "Defenestrando Jogos", url: "https://www.youtube.com/@defenestrandojogos", img: "/assets/images/partnerch/defenestrando.jpg" },
+  { name: "Canal Maddrgamers", url: "https://www.youtube.com/@maddrugamers", img: "/assets/images/partnerch/maddrugamers.jpg" },
+  { name: "Direto dos Consoles", url: "https://www.youtube.com/@DiretodosConsoles", img: "/assets/images/partnerch/diretodosconsoles.jpg" },
+  { name: "Retozera", url: "https://www.youtube.com/@Retrozera", img: "/assets/images/partnerch/retrozera.jpg" },
+  { name: "Detona Bits", url: "https://www.youtube.com/@Detonabits", img: "/assets/images/partnerch/detonabits.jpg" },
+  { name: "Joga+", url: "https://www.youtube.com/@alan.jogamais", img: "/assets/images/partnerch/jogamais.jpg" },
+  { name: "Gameplay Br", url: "https://www.youtube.com/@gameplaybr1746", img: "/assets/images/partnerch/gameplaybr.jpg" },
+  { name: "GuaxaZX", url: "https://www.youtube.com/@GuaxaZX", img: "/assets/images/partnerch/guaxazx.jpg" },
+  { name: "Nostal GAMES Retro", url: "https://www.youtube.com/@nostalgamesretro", img: "/assets/images/partnerch/nostalgamesretro.jpg" },
+  { name: "Jana Gamer", url: "https://www.youtube.com/@JanaGamer", img: "/assets/images/partnerch/janagamer.jpg" },
+  { name: "Anielleon", url: "https://www.youtube.com/@anielleom", img: "/assets/images/partnerch/anielleom.jpg" },
+  { name: "Mina dos Games (Amanda)", url: "https://www.youtube.com/@minadosgamesamandanicoly6493", img: "/assets/images/partnerch/minadosgames.jpg" },
+  { name: "Attomic Games TV", url: "https://www.youtube.com/@Attomicgames", img: "/assets/images/partnerch/attomicgames.jpg" },
+  { name: "OpassadoRecentedosGames", url: "https://www.youtube.com/@OpassadoRecenteDosGames", img: "/assets/images/partnerch/opassadorecente.jpg" },
+  { name: "Gorilas Sisters", url: "https://www.youtube.com/@GorilasSisters", img: "/assets/images/partnerch/gorilassisters.jpg" },
+  { name: "Games das antigas", url: "https://www.youtube.com/@Gamesdasantigas", img: "/assets/images/partnerch/gamesdasantigas.jpg" },
+  { name: "MiRiNiOR GAMES", url: "https://www.youtube.com/@MiRiNiOR", img: "/assets/images/partnerch/miriniorgames.jpg" },
+  { name: "Fernando Lucas", url: "https://www.youtube.com/@fernando_lcs", img: "/assets/images/partnerch/fernandolucas.jpg" },
+  { name: "Toloi Games", url: "https://www.youtube.com/@ToloiGames", img: "/assets/images/partnerch/toloigames.jpg" },
+  { name: "Creative Games", url: "https://www.youtube.com/@CreativeGamesOficial", img: "/assets/images/partnerch/creativegames.jpg" }
+];
+
+const container = document.querySelector(".channel-carousel-container");
+const track = document.querySelector(".channel-carousel-track");
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function createSlides() {
+  const shuffled = shuffle([...partnerData]);
+  const slides = shuffled.map(data => {
+    const div = document.createElement("div");
+    div.className = "channel-slide";
+    div.innerHTML = `
+      <a href="${data.url}" target="_blank">
+        <img src="${data.img}" alt="${data.name}">
+        <p>${data.name}</p>
+      </a>
+    `;
+    return div;
+  });
+
+  slides.forEach(slide => track.appendChild(slide));
+  slides.forEach(slide => track.appendChild(slide.cloneNode(true))); // Duplicar para loop
+}
+
+createSlides();
+
+let scrollSpeed = 0.5;
+let scrollDirection = 1;
+
+function animateScroll() {
+  container.scrollLeft += scrollSpeed * scrollDirection;
+
+  if (container.scrollLeft >= track.scrollWidth / 2) {
+    container.scrollLeft = 0;
+  } else if (container.scrollLeft <= 0) {
+    container.scrollLeft = track.scrollWidth / 2;
+  }
+
+  requestAnimationFrame(animateScroll);
+}
+
+animateScroll();
+
+function updateScrollSpeed(x) {
+  const width = container.offsetWidth;
+  const left = width * 0.2;
+  const right = width * 0.8;
+
+  if (x < left) {
+    scrollDirection = -1;
+    scrollSpeed = 1.5;
+  } else if (x > right) {
+    scrollDirection = 1;
+    scrollSpeed = 1.5;
+  } else {
+    scrollDirection = 1;
+    scrollSpeed = 0.5;
+  }
+}
+
+container.addEventListener("mousemove", e => updateScrollSpeed(e.clientX));
+container.addEventListener("touchmove", e => {
+  if (e.touches.length > 0) updateScrollSpeed(e.touches[0].clientX);
+});

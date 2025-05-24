@@ -1479,6 +1479,28 @@ main {
   box-shadow: 0 0 15px rgba(114, 137, 218, 0.7);
 }
 
+.social-icon.github {
+  color: #000000;
+  border: 2px solid #010409;
+}
+
+.social-icon.github:hover {
+  background-color: #000000;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(29, 36, 63, 0.7);
+}
+
+.social-icon.whatsapp {
+  color: #25d366;
+  border: 2px solid #25d366;
+}
+
+.social-icon.whatsapp:hover {
+  background-color: #25d366;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(114, 218, 137, 0.7);
+}
+
 .social-icon.instagram {
   color: #e1306c;
   border: 2px solid #e1306c;
@@ -2309,6 +2331,14 @@ main {
   background-color: rgba(114, 137, 218, 0.2);
 }
 
+.social-contact-item.whatsapp {
+  border-left: 3px solid #00bb10;
+}
+
+.social-contact-item.whatsapp:hover {
+  background-color: rgba(114, 218, 149, 0.2);
+}
+
 .social-contact-item.twitch {
   border-left: 3px solid #9146ff;
 }
@@ -2959,3 +2989,129 @@ footer {
 }
 
 
+.channel-carousel-section {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding: 4rem 0 2rem; /* Espaço adicional para evitar cortes */
+  text-align: center; /* Centraliza o título */
+}
+
+.channel-carousel-section .section-title {
+  margin-bottom: 2rem;
+}
+
+.channel-carousel-container {
+  width: 100%;
+  overflow-x: hidden; /* 🛠 Impede quebra na rolagem horizontal */
+  position: relative;
+  white-space: nowrap; /* 🛠 Evita que os slides quebrem para outra linha */
+}
+
+
+.channel-carousel-track {
+  display: flex;
+  gap: 5rem; /* Espaçamento aumentado */
+  align-items: center;
+}
+
+.channel-slide {
+  flex: 0 0 auto;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  position: relative;
+  padding: 2rem 0; /* Adiciona espaço extra para evitar cortes */
+}
+
+.channel-slide a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+}
+
+.channel-slide img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid red; /* Borda padrão */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-width 0.3s ease;
+}
+
+.channel-slide p {
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: text-shadow 0.3s ease;
+}
+
+/* 🛠 Correção do hover */
+.channel-slide:hover img, 
+.channel-slide:has(:hover) img {
+  transform: scale(1.2);
+  border-width: 3px;
+  box-shadow: 0 0 12px red;
+  position: relative;
+  z-index: 10; /* Eleva a imagem para evitar cortes */
+}
+
+.channel-slide:hover p, 
+.channel-slide:has(:hover) p {
+  text-shadow: 0 0 8px red;
+}
+
+/* 📱 Ajuste responsivo */
+@media (max-width: 768px) {
+  .channel-slide img {
+    width: 120px;
+    height: 120px;
+  }
+  .channel-slide p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .channel-slide img {
+    width: 100px;
+    height: 100px;
+  }
+  .channel-slide p {
+    font-size: 0.9rem;
+  }
+}
+
+
+.channel-slide:hover img, 
+.channel-slide:has(:hover) img {
+  transform: scale(1.2);
+  border-width: 3px;
+  box-shadow: 0 0 16px red; /* Glow mais intenso */
+  position: relative;
+  z-index: 10;
+}
+
+/* 🛠 Faz o título seguir a imagem no hover */
+.channel-slide:hover p, 
+.channel-slide:has(:hover) p {
+  text-shadow: 0 0 10px red;
+  transform: scale(1.1) translateY(8px); /* Aumenta levemente e desce junto com a imagem */
+}
+
+.channel-slide p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: text-shadow 0.3s ease, transform 0.3s ease; /* 🛠 Suaviza a animação */
+}
+
+/* 🔥 Agora o título acompanha a imagem de forma gradual */
+.channel-slide:hover p, 
+.channel-slide:has(:hover) p {
+  text-shadow: 0 0 10px red;
+  transform: scale(1.08) translateY(4px); /* 🛠 Movimentação mais sutil e fluida */
+}
