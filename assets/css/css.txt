@@ -237,7 +237,7 @@ main {
   width: 250px;
   height: 250px;
   transition: all 0.3s ease;
-  margin-top: 75px;
+  
 }
 
 .hero-logo:hover {
@@ -433,7 +433,7 @@ main {
   background-color: var(--card-bg-color);
   border-radius: 10px;
   padding: 30px;
-  border: 2.5px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
 
@@ -441,8 +441,8 @@ main {
 
 .featured-item:hover {
   transform: translateY(-10px);
-  box-shadow: var(--cyan-shadow);
-  border-color: 2px solid var(--secondary-color);
+  box-shadow: var(--glow-shadow);
+  border-color: 2px solid var(--primary-color);
     backdrop-filter: blur(4px) !important;
 }
 
@@ -1586,23 +1586,25 @@ main {
 }
 
 /* Team Section */
+/* Team Section */
 .team-section {
   padding: 80px 5%;
   text-align: center;
 }
 
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Ajuste dinâmico das colunas */
-    gap: 30px;
-    margin-top: 50px;
-    justify-content: center; /* Centraliza os elementos na horizontal */
-    align-items: center; /* Garante alinhamento vertical correto */
-    max-width: 80vw; /* Limita a largura para evitar que se espalhem demais */
-    margin-left: auto;
-    margin-right: auto;
-}
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: stretch;
 
+  /* Permite até 4 cards de 300px + 3 gaps de 30px = 1290px */
+  max-width: calc(4 * 300px + 3 * 30px);
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .team-card {
   background-color: #1eb0bd56;
@@ -1611,16 +1613,38 @@ main {
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
-max-width: 350px;
-  
+
+  flex: 1 1 300px;
+  max-width: 300px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Quebra para 2 por linha em telas menores */
+@media (max-width: 992px) {
+  .team-card {
+    flex: 1 1 calc(50% - 15px);
+    max-width: calc(50% - 15px);
+  }
+}
+
+/* Quebra para 1 por linha em telas pequenas */
+@media (max-width: 600px) {
+  .team-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* Hover Effects */
 .team-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--cyan-glow);
   border-color: var(--secondary-color);
 }
 
+/* Avatar */
 .team-avatar {
   width: 200px;
   height: 200px;
@@ -1642,6 +1666,7 @@ max-width: 350px;
   object-fit: cover;
 }
 
+/* Text content */
 .team-info {
   padding: 0 20px 30px;
 }
@@ -1668,6 +1693,65 @@ max-width: 350px;
   justify-content: center;
   gap: 15px;
 }
+
+
+/* Hover Effects */
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--cyan-glow);
+  border-color: var(--secondary-color);
+}
+
+/* Avatar */
+.team-avatar {
+  width: 200px;
+  height: 200px;
+  margin: 30px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--secondary-color);
+  transition: all 0.3s ease;
+}
+
+.team-card:hover .team-avatar {
+  transform: scale(1.05);
+  box-shadow: var(--cyan-glow);
+}
+
+.team-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text content */
+.team-info {
+  padding: 0 20px 30px;
+}
+
+.team-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.team-role {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.team-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 
 .become-partner {
   padding: 50px 5%;
@@ -1960,11 +2044,11 @@ max-width: 350px;
 .values {
     flex: 1; /* Faz com que todos os blocos tenham o mesmo tamanho */
     min-width: 300px; /* Garante que não fiquem muito pequenos */
-    background-color: rgba(0,0,0,0.5); /* Fundo transparente */
+    background-color: rgba(32, 113, 160, 0.5); /* Fundo transparente */
     border-radius: 10px;
     padding: 30px;
     text-align: center;
-    border: 1px solid var(--border-color);
+    border: 1px solid #1dafba4f;
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -1974,12 +2058,12 @@ max-width: 350px;
 .vision:hover,
 .values:hover {
     transform: translateY(-10px);
-    box-shadow: var(--glow-shadow);
+    box-shadow: var(--cyan-glow);
 }
 
-.mission:hover { border-color: var(--primary-color); }
+.mission:hover { border-color: var(--secondary-color); }
 .vision:hover { border-color: var(--secondary-color); }
-.values:hover { border-color: var(--accent-color); }
+.values:hover { border-color: var(--secondary-color); }
 
 .mission-icon,
 .vision-icon,
@@ -2039,7 +2123,7 @@ max-width: 350px;
 .stat-item {
     flex: 1; /* Garante tamanhos iguais */
     min-width: 220px; /* Define um tamanho mínimo para evitar itens muito pequenos */
-    background-color: rgba(0, 0, 0, 0.5); /* Mantém a transparência */
+    background-color: #bcb60467; /* Mantém a transparência */
     border-radius: 10px;
     padding: 30px;
     text-align: center;
@@ -2051,15 +2135,15 @@ max-width: 350px;
 
 .stat-item:hover {
     transform: translateY(-10px);
-    border-color: var(--primary-color);
-    box-shadow: var(--glow-shadow);
+    border-color: var(--accent-color);
+    box-shadow: var(--yellow-glow);
 }
 
 .stat-number {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 10px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -2729,8 +2813,7 @@ iframe {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: normal; /* mais fluido */
-  display: flex;
-  flex-direction: row;
+
   justify-content: center;
   padding: 2rem;
   box-sizing: border-box;
@@ -2740,9 +2823,9 @@ iframe {
 }
 
 /* ✅ Se você ainda quiser uma seção de tela cheia, adicione essa classe extra */
-.snap-full {
-  min-height: 100vh;
-}
+/* .snap-full { */
+/* min-height: 100vh; */
+/* } */
 
 /* 🛑 Última snap-section: reduzida para permitir rolagem além dela */
 .snap-section[data-last] {
@@ -2848,3 +2931,5 @@ footer {
     opacity: 1;
   }
 }
+
+
