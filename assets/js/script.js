@@ -680,20 +680,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sections.forEach(section => observer.observe(section));
 });
-
-document.addEventListener("DOMContentLoaded", () => {
-  const valoresSection = document.querySelector("#valores");
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelector(".animated-content").classList.add("animate");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 }); // Ajuste para ativação suave
-
-  if (valoresSection) {
-    observer.observe(valoresSection);
-  }
-});
