@@ -1,6 +1,7 @@
 # 🎮 Spocky-Games-Website
 
-**Spocky-Games-Webste** é um portal de jogos moderno e responsivo, desenvolvido com HTML, CSS e JavaScript. O projeto oferece uma experiência de navegação fluida, integrando um background dinâmico inspirado no clássico Pac-Man.
+**Spocky-Games-Webste** é um Website para o canal Spocky Games (YouTube).
+Moderno e responsivo, desenvolvido com HTML, CSS e JavaScript. O projeto oferece uma experiência de navegação fluida, integrando um background dinâmico inspirado no clássico Pac-Man.
 
 🔗 Acesse o projeto online: [v4-spocky-games.vercel.app](https://v4-spocky-games.vercel.app)
 
