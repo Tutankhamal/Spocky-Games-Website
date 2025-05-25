@@ -3115,3 +3115,7 @@ footer {
   text-shadow: 0 0 10px #cf1d3f;
   transform: scale(1.08) translateY(4px); /* 🛠 Movimentação mais sutil e fluida */
 }
+
+.game-section {
+  padding: 50px 5%;
+}
