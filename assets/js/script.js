@@ -777,84 +777,13 @@ container.addEventListener("touchmove", e => {
 
 
 
-const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+const API_KEY = 'SUA_API_KEY';
 const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
 const MAX_RESULTS = 10;
 
-async function fetchLastVideos() {
-  // Buscar vídeos direto via search.list, filtrando por tipo video, ordenando por data
-  const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}&type=video`);
+async function fetchVideos() {
+  const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`;
+  const response = await fetch(url);
   const data = await response.json();
-
-  if (!data.items || data.items.length === 0) {
-    throw new Error('Nenhum vídeo encontrado');
-  }
-
-  // Mapear para vídeo com dados que vamos usar
-  const videos = data.items.map(item => ({
-    id: item.id.videoId,
-    title: item.snippet.title,
-    thumb: item.snippet.thumbnails.high.url,
-    publishedAt: item.snippet.publishedAt
-  }));
-
-  return videos;
+  return data.items;
 }
-
-function formatDate(dateStr) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
-}
-
-function createVideoCard(video) {
-  const url = `https://www.youtube.com/watch?v=${video.id}`;
-
-  const card = document.createElement('div');
-  card.className = 'video-card';
-  card.tabIndex = 0;
-  card.setAttribute('role', 'link');
-  card.setAttribute('aria-label', `Abrir vídeo: ${video.title}`);
-
-  card.innerHTML = `
-    <img class="video-thumb" src="${video.thumb}" alt="Thumbnail do vídeo: ${video.title}" loading="lazy" />
-    <div class="video-info">
-      <div class="video-title">${video.title}</div>
-      <div class="video-date">Publicado em: ${formatDate(video.publishedAt)}</div>
-    </div>
-  `;
-
-  card.addEventListener('click', () => {
-    window.open(url, '_blank', 'noopener');
-  });
-
-  card.addEventListener('keypress', (e) => {
-    if(e.key === 'Enter' || e.key === ' ') {
-      window.open(url, '_blank', 'noopener');
-    }
-  });
-
-  return card;
-}
-
-async function initOnDemandSection() {
-  const container = document.getElementById('videos-container');
-  container.innerHTML = '<p>Carregando vídeos...</p>';
-
-  try {
-    const videos = await fetchLastVideos();
-    container.innerHTML = '';
-    if (videos.length === 0) {
-      container.innerHTML = '<p>Nenhum vídeo encontrado.</p>';
-      return;
-    }
-    videos.forEach(video => {
-      const card = createVideoCard(video);
-      container.appendChild(card);
-    });
-  } catch (err) {
-    container.innerHTML = `<p>Erro ao carregar vídeos: ${err.message}</p>`;
-    console.error(err);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initOnDemandSection);
