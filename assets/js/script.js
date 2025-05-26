@@ -777,12 +777,12 @@ container.addEventListener("touchmove", e => {
 
 
 
-const API_KEY = 'SUA_API_KEY';
+const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
 const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
 const MAX_RESULTS = 10;
 
 async function fetchVideos() {
-  const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`;
+  const url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc&channelId=UCSPC6X4M-tVPeK4IZMbK5aw&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`;
   const response = await fetch(url);
   const data = await response.json();
   return data.items;
