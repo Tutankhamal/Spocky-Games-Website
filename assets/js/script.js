@@ -787,3 +787,110 @@ async function fetchVideos() {
   const data = await response.json();
   return data.items;
 }
+
+
+const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+
+async function fetchLiveVideo() {
+  // Busca a live AO VIVO (liveBroadcastContent = live) com filtro para não ter #shorts no título
+  const liveResponse = await fetch(
+    `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}` +
+    `&channelId=${CHANNEL_ID}` +
+    `&part=snippet` +
+    `&eventType=live` +
+    `&type=video` +
+    `&maxResults=5`
+  );
+  const liveData = await liveResponse.json();
+
+  if (!liveData.items) {
+    throw new Error('Erro ao buscar lives ao vivo');
+  }
+
+  // Filtra para lives que NÃO têm #shorts no título (ignorar verticais)
+  const liveHorizontais = liveData.items.filter(item => !item.snippet.title.toLowerCase().includes('#shorts'));
+
+  if (liveHorizontais.length > 0) {
+    return {
+      videoId: liveHorizontais[0].id.videoId,
+      title: liveHorizontais[0].snippet.title,
+      live: true
+    };
+  }
+
+  // Se não encontrou live ao vivo horizontal, busca a última live finalizada horizontal
+
+  // Passo 1: buscar vídeos do canal (máx 50) com filtro eventType não é live
+  const recentResponse = await fetch(
+    `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}` +
+    `&channelId=${CHANNEL_ID}` +
+    `&part=snippet` +
+    `&order=date` +
+    `&type=video` +
+    `&maxResults=50`
+  );
+  const recentData = await recentResponse.json();
+
+  if (!recentData.items) {
+    throw new Error('Erro ao buscar vídeos recentes');
+  }
+
+  // Filtra vídeos com "live" na descrição ou título, sem #shorts
+  // Queremos vídeos que NÃO estejam ao vivo, mas que tenham sido lives
+  // Como não dá para garantir com certeza, vamos filtrar títulos com 'live' e sem '#shorts'
+
+  const liveVideos = recentData.items.filter(item => {
+    const title = item.snippet.title.toLowerCase();
+    return (
+      title.includes('live') &&
+      !title.includes('#shorts')
+    );
+  });
+
+  if (liveVideos.length === 0) {
+    throw new Error('Nenhuma live finalizada horizontal encontrada');
+  }
+
+  return {
+    videoId: liveVideos[0].id.videoId,
+    title: liveVideos[0].snippet.title,
+    live: false
+  };
+}
+
+function renderLive(video) {
+  const container = document.getElementById('live-video-container');
+  container.innerHTML = '';
+
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube.com/embed/${video.videoId}?autoplay=1&mute=1&rel=0`;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.title = video.title;
+
+  container.appendChild(iframe);
+
+  // Adicionar legenda
+  const caption = document.createElement('p');
+  caption.textContent = video.live ? '🔴 Live ao Vivo' : 'Última Live Gravada';
+  caption.style.color = video.live ? '#e74c3c' : '#aaa';
+  caption.style.marginTop = '8px';
+  caption.style.fontWeight = 'bold';
+  container.appendChild(caption);
+}
+
+async function initLiveSection() {
+  const container = document.getElementById('live-video-container');
+  container.innerHTML = '<p>Carregando live...</p>';
+
+  try {
+    const liveVideo = await fetchLiveVideo();
+    renderLive(liveVideo);
+  } catch (error) {
+    container.innerHTML = `<p>Erro ao carregar live: ${error.message}</p>`;
+    console.error(error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initLiveSection);
