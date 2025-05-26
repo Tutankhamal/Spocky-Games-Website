@@ -635,7 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const effects = [
     "effect-car-left",
-    "effect-car-right",
+    //"effect-car-right",
     "effect-car-top"
     // "effect-car-bottom" removido
   ];
