@@ -774,3 +774,111 @@ container.addEventListener("mousemove", e => updateScrollSpeed(e.clientX));
 container.addEventListener("touchmove", e => {
   if (e.touches.length > 0) updateScrollSpeed(e.touches[0].clientX);
 });
+
+
+
+const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+const MAX_RESULTS = 10;
+
+async function fetchLastLiveVideos() {
+  // Passo 1: Buscar o upload playlist do canal (contém vídeos do canal)
+  const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`);
+  const channelData = await channelResponse.json();
+  if (!channelData.items || channelData.items.length === 0) {
+    throw new Error('Canal não encontrado');
+  }
+
+  const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+  // Passo 2: Buscar vídeos da playlist
+  const playlistResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=50&key=${API_KEY}`);
+  const playlistData = await playlistResponse.json();
+
+  if (!playlistData.items || playlistData.items.length === 0) {
+    throw new Error('Nenhum vídeo encontrado no canal');
+  }
+
+  // Passo 3: Filtrar vídeos que sejam vídeos de live finalizada (liveBroadcastContent === "none" e título ou descrição sugere live)
+  // OBS: A API playlistItems não retorna diretamente liveBroadcastContent, então vamos buscar detalhes dos vídeos no próximo passo.
+
+  // Obter IDs dos vídeos para buscar detalhes
+  const videoIds = playlistData.items.map(item => item.snippet.resourceId.videoId).join(',');
+
+  // Passo 4: Buscar detalhes dos vídeos para filtrar somente lives finalizadas
+  const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id=${videoIds}&key=${API_KEY}`);
+  const videosData = await videosResponse.json();
+
+  // Filtrar vídeos que tiveram live (livestream ended)
+  // liveStreamingDetails.concurrentViewers existe só durante live, então quando acabar, esse objeto some.
+  // Para identificar vídeo live finalizada, checamos se liveStreamingDetails existe (indicando que foi live) e se 'actualEndTime' existe.
+
+  const liveVideos = videosData.items
+    .filter(video => video.liveStreamingDetails && video.liveStreamingDetails.actualEndTime)
+    .sort((a,b) => new Date(b.liveStreamingDetails.actualEndTime) - new Date(a.liveStreamingDetails.actualEndTime))
+    .slice(0, MAX_RESULTS);
+
+  return liveVideos;
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function createVideoCard(video) {
+  const url = `https://www.youtube.com/watch?v=${video.id}`;
+  const thumb = video.snippet.thumbnails.high.url;
+  const title = video.snippet.title;
+  const date = video.liveStreamingDetails.actualEndTime;
+
+  const card = document.createElement('div');
+  card.className = 'video-card';
+  card.tabIndex = 0;
+  card.setAttribute('role', 'link');
+  card.setAttribute('aria-label', `Abrir vídeo: ${title}`);
+
+  card.innerHTML = `
+    <img class="video-thumb" src="${thumb}" alt="Thumbnail do vídeo: ${title}" loading="lazy" />
+    <div class="video-info">
+      <div class="video-title">${title}</div>
+      <div class="video-date">Encerrado em: ${formatDate(date)}</div>
+    </div>
+  `;
+
+  card.addEventListener('click', () => {
+    window.open(url, '_blank', 'noopener');
+  });
+
+  card.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      window.open(url, '_blank', 'noopener');
+    }
+  });
+
+  return card;
+}
+
+async function initOnDemandSection() {
+  const container = document.getElementById('videos-container');
+  container.innerHTML = '<p>Carregando vídeos...</p>';
+
+  try {
+    const liveVideos = await fetchLastLiveVideos();
+    container.innerHTML = '';
+    if (liveVideos.length === 0) {
+      container.innerHTML = '<p>Nenhuma live finalizada encontrada.</p>';
+      return;
+    }
+    liveVideos.forEach(video => {
+      const card = createVideoCard(video);
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = `<p>Erro ao carregar vídeos: ${err.message}</p>`;
+    console.error(err);
+  }
+}
+
+// Inicializa no carregamento do DOM
+document.addEventListener('DOMContentLoaded', initOnDemandSection);

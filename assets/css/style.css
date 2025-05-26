@@ -3119,3 +3119,78 @@ footer {
 .game-section {
   padding: 50px 5%;
 }
+
+.on-demand-section {
+  padding: 20px;
+  background: #111;
+  color: #eee;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.on-demand-section h2 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  text-align: center;
+  color: #f1c40f;
+}
+
+.videos-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.videos-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.videos-container::-webkit-scrollbar-thumb {
+  background-color: #f1c40f;
+  border-radius: 4px;
+}
+
+.video-card {
+  background: #222;
+  border-radius: 8px;
+  min-width: 280px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(241, 196, 15, 0.8);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #f1c40f;
+}
+
+.video-thumb {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+}
+
+.video-info {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.video-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.video-date {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin-top: auto;
+  text-align: right;
+}
