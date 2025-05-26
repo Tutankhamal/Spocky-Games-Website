@@ -213,7 +213,7 @@ const canalID = "UCSPC6X4M-tVPeK4IZMbK5aw"; // Substitua pelo ID do canal
       document.getElementById("latest-video-box").innerText = "Erro ao carregar vídeo.";
     });
     
-// Background Pacman Dynamic (UPDATED)    
+// Background Pacman Dynamic.    
 const canvas = document.getElementById('retro-bg');
 const ctx = canvas.getContext('2d');
 
@@ -221,7 +221,7 @@ let width = canvas.width = window.innerWidth;
 let height = canvas.height = window.innerHeight;
 
 let baseTileSize = 40;
-let tileSize = baseTileSize;
+let tileSize = baseTileSize * 0.85;  // valor inicial reduzido
 
 let cols, rows, halfCols;
 let maze = [];
@@ -377,18 +377,21 @@ function heuristic(a, b) {
 function findPath(start, end) {
   const openSet = [start];
   const cameFrom = {};
-  const gScore = { [`${start.x},${start.y}`]: 0 };
-  const fScore = { [`${start.x},${start.y}`]: heuristic(start, end) };
+  const gScore = {};
+  const fScore = {};
+  function nodeKey(n) { return `${n.x},${n.y}`; }
+  gScore[nodeKey(start)] = 0;
+  fScore[nodeKey(start)] = heuristic(start, end);
 
   while (openSet.length > 0) {
-    openSet.sort((a, b) => fScore[`${a.x},${a.y}`] - fScore[`${b.x},${b.y}`]);
+    openSet.sort((a, b) => fScore[nodeKey(a)] - fScore[nodeKey(b)]);
     const current = openSet.shift();
     if (current.x === end.x && current.y === end.y) {
       const path = [];
       let temp = current;
-      while (temp && `${temp.x},${temp.y}` !== `${start.x},${start.y}`) {
+      while (temp && nodeKey(temp) !== nodeKey(start)) {
         path.unshift(temp);
-        temp = cameFrom[`${temp.x},${temp.y}`];
+        temp = cameFrom[nodeKey(temp)];
       }
       return path;
     }
@@ -407,8 +410,8 @@ function findPath(start, end) {
         maze[neighbor.y][neighbor.x] === 1
       ) continue;
 
-      const key = `${neighbor.x},${neighbor.y}`;
-      const tentativeG = gScore[`${current.x},${current.y}`] + 1;
+      const tentativeG = gScore[nodeKey(current)] + 1;
+      const key = nodeKey(neighbor);
       if (!(key in gScore) || tentativeG < gScore[key]) {
         cameFrom[key] = current;
         gScore[key] = tentativeG;
@@ -419,7 +422,6 @@ function findPath(start, end) {
       }
     }
   }
-
   return [];
 }
 
@@ -560,12 +562,11 @@ function resizeCanvasAndMaze() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 
+  // Ajusta o tamanho do tile de acordo com a largura da janela para balancear desempenho e qualidade
   if (width >= 1600) {
-    tileSize = baseTileSize;
-  } else if (width >= 1200) {
-    tileSize = baseTileSize * 0.9;
+    tileSize = baseTileSize;     // 100% para telas grandes
   } else {
-    tileSize = baseTileSize * 0.85;
+    tileSize = baseTileSize * 0.85; // 85% para telas médias/pequenas
   }
 
   cols = Math.floor(width / tileSize);
@@ -575,8 +576,7 @@ function resizeCanvasAndMaze() {
   generateClassicMaze();
 
   particles = [];
-  const particleCount = width >= 1600 ? 60 : 40;
-  for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+  for (let i = 0; i < 60; i++) particles.push(new Particle());
 }
 
 function animate() {
@@ -597,10 +597,12 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-window.addEventListener('resize', resizeCanvasAndMaze);
+window.addEventListener('resize', () => {
+  resizeCanvasAndMaze();
+});
+
 resizeCanvasAndMaze();
 animate();
-
 
 
 
