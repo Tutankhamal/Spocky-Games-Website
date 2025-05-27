@@ -74,7 +74,7 @@
             </div>
         </section>
         
-  <section class="liveplayer-container">
+  <section class="liveplayer-container snap-section">
     <div class="liveplayer-box" id="liveplayer-box">
       <div class="liveplayer-title" id="liveplayer-title">Carregando transmissão retrô...</div>
       <div class="liveplayer-video-wrapper" id="liveplayer-video"></div>
@@ -252,8 +252,8 @@
 
         // Botões
         document.getElementById('liveplayer-buttons').innerHTML = `
-          <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">▶️ Assistir no YouTube</a>
-          <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">💎 Seja Membro</a>
+          <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Ver no YouTube</a>
+          <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
         `;
         document.getElementById('liveplayer-buttons').style.display = 'flex';
       })

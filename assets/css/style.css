@@ -3134,24 +3134,25 @@ footer {
       }
     }
 
-    /* ESTILO PRINCIPAL */
+
     .liveplayer-container {
-      font-family: 'Press Start 2P', monospace;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       background: transparent;
       padding: 2rem 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
     }
 
     .liveplayer-box {
       width: 100%;
       max-width: 960px;
-      background: rgba(133, 0, 0, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 3px solid #be1c39;
+       background-color: #be1c3a21; /* deve conter transparência (ex: rgba(..., 0.2)) */
+       border-radius: 10px;
+      backdrop-filter: blur(3px);      
+      border: 1px solid #be1c3a8f;
       padding: 1.5rem;
       box-shadow: 0 0 5px #be1c39;
       display: flex;
@@ -3160,11 +3161,12 @@ footer {
       animation: liveplayer-pixel-slide 0.8s ease-out both;
     }
 
-    .liveplayer-title {
-      font-size: 0.75rem;
-      text-align: center;
-      text-shadow: 1px 1px 2px #000;
-    }
+.liveplayer-title {
+  font-size: 1.5rem;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
+  font-weight: bold;
+}
 
     .liveplayer-video-wrapper {
       position: relative;
@@ -3203,11 +3205,11 @@ footer {
 .liveplayer-buttons a {
   position: relative;
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: 1rem;        /* aumentado para 1rem */
   padding: 0.75rem 1.2rem;
   text-align: center;
-  background-color: #000000c5; /* fundo semi-transparente preto */
-  border: 2px solid #be1c39; /* cor neon vermelha */
+  background-color: #000000c5;
+  border: 1px solid #be1c39;
   color: white;
   font-weight: 600;
   border-radius: 10px;
@@ -3217,7 +3219,7 @@ footer {
   cursor: pointer;
   transition: all 0.3s ease;
   clip-path: inset(0 0 0 0);
-  box-shadow: 0 0 6px #be1c3980; /* glow suave inicial */
+  box-shadow: 0 0 2px #be1c3980;
 }
 
 .liveplayer-buttons a::before {
