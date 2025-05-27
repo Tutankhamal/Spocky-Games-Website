@@ -74,16 +74,14 @@
             </div>
         </section>
         
-        <section class="live-section snap-section">
-            <div class="live-container" data-aos="fade-up">
-                <div class="live-player-placeholder">
-                    
-
-            <div class="video-player-container" data-aos="fade-up">
-<div id="latest-video-box">
-  <p>Carregando vídeo...</p>
-</div>
-                </div>
+  <section class="liveplayer-container">
+    <div class="liveplayer-box" id="liveplayer-box">
+      <div class="liveplayer-title" id="liveplayer-title">Carregando transmissão retrô...</div>
+      <div class="liveplayer-video-wrapper" id="liveplayer-video"></div>
+      <div class="liveplayer-chat-wrapper" id="liveplayer-chat"></div>
+      <div class="liveplayer-buttons" id="liveplayer-buttons" style="display: none;"></div>
+    </div>
+  </section>
                 <!--
                 <div class="live-info">
                     <h2>Jogando Super Nintendo Classics</h2>
@@ -210,6 +208,60 @@
     </footer>
     
     <script src="/assets/js/script.js"></script>
+    <script>
+    const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
+
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        const items = data.items.filter(item => !item.title.toLowerCase().includes('#shorts'));
+
+        if (!items.length) {
+          document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
+          return;
+        }
+
+        const liveVideo = items.find(item => item.thumbnail && item.thumbnail.includes('hqdefault_live.jpg'));
+        const chosenVideo = liveVideo || items[0];
+        const videoId = chosenVideo.link.split('v=')[1];
+        const title = chosenVideo.title;
+        const isLive = !!liveVideo;
+        const domain = location.hostname;
+
+        document.getElementById('liveplayer-title').textContent = title;
+
+        // Exibe player
+        document.getElementById('liveplayer-video').innerHTML = `
+          <iframe 
+            src="https://www.youtube.com/embed/${videoId}?autoplay=0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>`;
+
+        // Exibe chat se live estiver ao vivo
+        if (isLive) {
+          document.getElementById('liveplayer-chat').style.display = 'block';
+          document.getElementById('liveplayer-chat').innerHTML = `
+            <iframe 
+              src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${domain}" 
+              allowfullscreen>
+            </iframe>`;
+        }
+
+        // Botões
+        document.getElementById('liveplayer-buttons').innerHTML = `
+          <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">▶️ Assistir no YouTube</a>
+          <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">💎 Seja Membro</a>
+        `;
+        document.getElementById('liveplayer-buttons').style.display = 'flex';
+      })
+      .catch(err => {
+        console.error('Erro ao carregar player:', err);
+        document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
+      });
+  </script>
     
 </body>
 </html>

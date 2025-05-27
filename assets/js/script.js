@@ -164,54 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // YouTube Player
-const canalID = "UCSPC6X4M-tVPeK4IZMbK5aw"; // Substitua pelo ID do canal
-  const videoBox = document.getElementById("video-box");
-
-  function carregarIframe(videoId) {
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.youtube.com/embed/${videoId}`;
-    iframe.allow = "autoplay; encrypted-media";
-    iframe.allowFullscreen = true;
-    iframe.frameBorder = "0";
-    iframe.style.width = "100%";
-    iframe.style.aspectRatio = "16 / 9";
-    iframe.style.border = "none";
-    videoBox.innerHTML = "";
-    videoBox.appendChild(iframe);
-  }
-
-  fetch(`https://feedrapp.info/api/v1/converter?url=https://www.youtube.com/feeds/videos.xml?channel_id=${canalID}`)
-    .then(res => res.json())
-    .then(data => {
-      const videoUrl = data.items?.[0]?.link;
-      if (videoUrl) {
-        const videoId = new URL(videoUrl).searchParams.get("v");
-        carregarIframe(videoId);
-      } else {
-        videoBox.innerHTML = "<p>Vídeo não encontrado.</p>";
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      videoBox.innerHTML = "<p>Não foi possível carregar o vídeo.</p>";
-    });
-
-
-    const channelID = "UCSPC6X4M-tVPeK4IZMbK5aw";
-  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${channelID}`;
-
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(data => {
-      const videoId = data.items[0].link.split('=')[1];
-      const iframe = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-      document.getElementById("latest-video-box").innerHTML = iframe;
-    })
-    .catch(err => {
-      console.error("Erro ao carregar vídeo:", err);
-      document.getElementById("latest-video-box").innerText = "Erro ao carregar vídeo.";
-    });
     
 // Background Pacman Dynamic.    
 const canvas = document.getElementById('retro-bg');
@@ -606,30 +558,11 @@ animate();
 
 
 
-// Pixeated effect
-document.addEventListener("DOMContentLoaded", () => {
-  const pixelatedSections = document.querySelectorAll(".pixelated");
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate");
-        observer.unobserve(entry.target); // anima apenas uma vez
-      }
-    });
-  }, {
-    threshold: 0.3 // ativa quando 30% da seção estiver visível
-  });
-
-  pixelatedSections.forEach(section => {
-    observer.observe(section);
-  });
-});
 
 
 
 
-// Tetris Viewport effect
+// Section Viewport effect
 document.addEventListener("DOMContentLoaded", () => {
   const sections = document.querySelectorAll(".animated-section");
 
