@@ -166,8 +166,16 @@
         
 
 
+<section class="indexvideo-section animated-section">
+  <div class="animated-content">
+    <div class="indexvideo-title-wrapper">
+    <h2 class="section-title animated-section snap-section">Últimos Vídeos</h2>
+  </div>
+  <div class="indexvideo-container" id="indexvideo-feed"></div>
+  </div>
+</section>
 
-        <section class="latest-videos animated-section snap-section snap-full">
+        <!-- <section class="latest-videos animated-section snap-section snap-full">
           <div class="animated-content">  
             <h2 class="section-title">Últimos Vídeos</h2>
             <div class="video-grid">
@@ -214,7 +222,7 @@
                 <a href="https://www.youtube.com/@SpockyGames" target="_blank" class="neon-button">Ir para o Canal no YouTube</a>
             </div>
           </div>  
-        </section>
+        </section> -->
     </main>
 
     
@@ -260,6 +268,56 @@
 
     
     <script src="/assets/js/script.js"></script>
+   <script>
+  const feedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw';
+
+  fetch(feedUrl)
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('indexvideo-feed');
+
+      if (!data.items || !Array.isArray(data.items)) {
+        container.innerHTML = '<p>Não foi possível carregar os vídeos.</p>';
+        return;
+      }
+
+      // Filtra vídeos horizontais (sem #shorts no título)
+      const horizontalVideos = data.items.filter(item =>
+        !item.title.toLowerCase().includes('#shorts')
+      ).slice(0, 3);
+
+      if (horizontalVideos.length === 0) {
+        container.innerHTML = '<p>Nenhum vídeo disponível no formato horizontal.</p>';
+        return;
+      }
+
+      horizontalVideos.forEach(item => {
+        const match = item.link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+        const videoId = match ? match[1] : null;
+
+        if (!videoId) return;
+
+        const videoEl = document.createElement('div');
+        videoEl.className = 'indexvideo-item';
+        videoEl.innerHTML = `
+          <iframe 
+            src="https://www.youtube.com/embed/${videoId}" 
+            frameborder="0" 
+            allowfullscreen 
+            title="${item.title}">
+          </iframe>
+          <div class="indexvideo-title-text">${item.title}</div>
+        `;
+        container.appendChild(videoEl);
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao carregar o feed:', error);
+      document.getElementById('indexvideo-feed').innerHTML = '<p>Erro ao carregar os vídeos.</p>';
+    });
+</script>
+
+
 
 
 </body>
