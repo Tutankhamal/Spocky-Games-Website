@@ -277,7 +277,7 @@ class Particle {
   reset() {
     this.x = Math.random() * width;
     this.y = Math.random() * height;
-    this.size = Math.random() * 2 + 1;
+    this.size = Math.floor(Math.random() * 3 + 2); // tamanho maior e inteiro
     this.baseX = this.x;
     this.baseY = this.y;
     this.hue = Math.floor(Math.random() * 360);
@@ -285,12 +285,10 @@ class Particle {
   }
   draw() {
     const color = `hsl(${this.hue}, 100%, 60%)`;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fillStyle = color;
     ctx.shadowColor = color;
-    ctx.shadowBlur = 5;
-    ctx.fill();
+    ctx.shadowBlur = 4;
+    ctx.fillRect(this.x, this.y, this.size, this.size); // quadrado ao invés de círculo
   }
   update() {
     this.hue = (this.hue + this.hueSpeed) % 360;
@@ -308,6 +306,7 @@ class Particle {
     }
   }
 }
+
 
 let particles = [];
 
