@@ -517,7 +517,7 @@ function resizeCanvasAndMaze() {
 
   generateClassicMaze();
 
-  const particleCount = isMobile ? 60 : 45;
+  const particleCount = isMobile ? 200 : 300;
   particles = [];
   for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 }
