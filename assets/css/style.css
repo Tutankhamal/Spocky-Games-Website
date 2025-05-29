@@ -449,10 +449,10 @@ main {
 
 
 .featured-item {
-  background-color: var(--card-bg-color);
+  background-color: #bd1b3994;
   border-radius: 10px;
   padding: 30px;
-  border: 1.5px solid var(--border-color);
+  border: 1.5px solid #bd1b39;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
 
@@ -461,7 +461,7 @@ main {
 .featured-item:hover {
   transform: translateY(-10px);
   box-shadow: var(--glow-shadow);
-  border-color: 2px solid var(--primary-color);
+  border-color: 3px solid #bd1b39;
     backdrop-filter: blur(4px) !important;
 }
 
@@ -2085,7 +2085,7 @@ main {
 .values {
     flex: 1; /* Faz com que todos os blocos tenham o mesmo tamanho */
     min-width: 300px; /* Garante que não fiquem muito pequenos */
-    background-color: rgba(32, 113, 160, 0.5); /* Fundo transparente */
+    background-color: rgba(32, 113, 160, 0.61); /* Fundo transparente */
     border-radius: 10px;
     padding: 30px;
     text-align: center;
@@ -3149,9 +3149,9 @@ footer {
     .liveplayer-box {
       width: 100%;
       max-width: 960px;
-       background-color: #000000 !important; /* rgba(0, 0, 0, 0.35) */
+       background-color: #1f00007c !important; /* rgba(0, 0, 0, 0.35) */
        border-radius: 10px;
-      backdrop-filter: blur(3px);      
+           
       border: 1px solid #be1c3a8f;
       padding: 1.5rem;
       box-shadow: 0 0 5px #be1c39;
@@ -3354,7 +3354,7 @@ footer {
 }
 
 .indexvideo-item {
-  background: rgba(190, 28, 57, 0.15); /* vermelho translúcido */
+  background: rgba(190, 28, 58, 0.541); /* vermelho translúcido */
   border: 1px solid #be1c39;
   border-radius: 12px;
   overflow: hidden;
