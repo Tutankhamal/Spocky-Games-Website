@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/paulirish/lite-youtube-embed@latest/src/lite-yt-embed.css" />
+    <script src="https://cdn.jsdelivr.net/gh/paulirish/lite-youtube-embed@latest/src/lite-yt-embed.js" defer></script>
+
 </head>
 <body>
     <canvas id="retro-bg"></canvas>
@@ -270,7 +273,58 @@
 
     
     <script src="/assets/js/script.js"></script>
-   <script>
+
+<script>
+  const feedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw';
+
+  fetch(feedUrl)
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('indexvideo-feed');
+
+      if (!data.items || !Array.isArray(data.items)) {
+        container.innerHTML = '<p>Não foi possível carregar os vídeos.</p>';
+        return;
+      }
+
+      // Filtra vídeos horizontais (sem #shorts no título)
+      const horizontalVideos = data.items.filter(item =>
+        !item.title.toLowerCase().includes('#shorts')
+      ).slice(0, 3);
+
+      if (horizontalVideos.length === 0) {
+        container.innerHTML = '<p>Nenhum vídeo disponível no formato horizontal.</p>';
+        return;
+      }
+
+      horizontalVideos.forEach(item => {
+        const match = item.link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+        const videoId = match ? match[1] : null;
+
+        if (!videoId) return;
+
+        const videoEl = document.createElement('div');
+        videoEl.className = 'indexvideo-item';
+
+        // Aqui usamos o lite-youtube-embed com o videoid
+        videoEl.innerHTML = `
+          <lite-youtube 
+            videoid="${videoId}" 
+            playlabel="${item.title.replace(/"/g, "'")}">
+          </lite-youtube>
+          <div class="indexvideo-title-text">${item.title}</div>
+        `;
+        container.appendChild(videoEl);
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao carregar o feed:', error);
+      document.getElementById('indexvideo-feed').innerHTML = '<p>Erro ao carregar os vídeos.</p>';
+    });
+</script>
+
+
+   <!-- <script>
   const feedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw';
 
   fetch(feedUrl)
@@ -317,7 +371,7 @@
       console.error('Erro ao carregar o feed:', error);
       document.getElementById('indexvideo-feed').innerHTML = '<p>Erro ao carregar os vídeos.</p>';
     });
-</script>
+</script> -->
 <script>
     function calcularIdadeCanal() {
         const dataCriacao = new Date(2022, 10, 15); // 15 de novembro de 2022
