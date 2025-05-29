@@ -2181,7 +2181,7 @@ main {
 }
 
 .stat-number {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 10px;
     background: linear-gradient(90deg, var(--secondary-color), var(--secondary-color));
