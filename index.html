@@ -305,237 +305,90 @@
 
 
 <script>
-  const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
-  const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const CACHE_KEY = 'yt_subscriber_count';
-  const CACHE_TIME_KEY = 'yt_subscriber_count_time';
-  const CACHE_DURATION_HOURS = 6;
+  (async () => {
+    const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+    const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+    const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 horas em ms
 
-  function formatNumber(n) {
-    const num = parseInt(n, 10);
-    if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
-    if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
-    return num;
-  }
+    const CACHE_KEYS = {
+      subs: 'yt_subscriber_count',
+      subsTime: 'yt_subscriber_count_time',
+      videos: 'yt_video_count',
+      videosTime: 'yt_video_count_time',
+      views: 'yt_view_count',
+      viewsTime: 'yt_view_count_time'
+    };
 
-  async function fetchFromYouTube() {
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const subs = data.items[0].statistics.subscriberCount;
+    const formatNumber = (n) => {
+      const num = parseInt(n, 10);
+      if (num >= 1e9) return (num / 1e9).toFixed(1).replace('.', ',') + 'B+';
+      if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
+      if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
+      return num + '+';
+    };
 
-      // Salva no cache com timestamp atual
-      localStorage.setItem(CACHE_KEY, subs);
-      localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+    const getCached = (key, timeKey) => {
+      const now = Date.now();
+      const value = localStorage.getItem(key);
+      const timestamp = parseInt(localStorage.getItem(timeKey), 10);
+      return value && timestamp && now - timestamp < CACHE_DURATION ? value : null;
+    };
 
-      return subs;
-    } catch (err) {
-      console.error('Erro ao buscar dados da API do YouTube:', err);
-      return null;
-    }
-  }
+    const setCache = (key, timeKey, value) => {
+      localStorage.setItem(key, value);
+      localStorage.setItem(timeKey, Date.now().toString());
+    };
 
-  async function updateSubscriberCount() {
-    const now = Date.now();
-    const cachedTime = parseInt(localStorage.getItem(CACHE_TIME_KEY), 10);
-    const cachedSubs = localStorage.getItem(CACHE_KEY);
-    const maxAge = CACHE_DURATION_HOURS * 60 * 60 * 1000;
+    const fetchStats = async () => {
+      try {
+        const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const stats = data.items[0].statistics;
 
-    if (cachedSubs && cachedTime && (now - cachedTime < maxAge)) {
-      document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-    } else {
-      const subs = await fetchFromYouTube();
-      if (subs) {
-        document.getElementById('subscriber-count').textContent = formatNumber(subs);
-      } else if (cachedSubs) {
-        // Se a API falhar, usa o valor do cache
-        document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-      } else {
-        document.getElementById('subscriber-count').textContent = 'N/A';
+        setCache(CACHE_KEYS.subs, CACHE_KEYS.subsTime, stats.subscriberCount);
+        setCache(CACHE_KEYS.videos, CACHE_KEYS.videosTime, stats.videoCount);
+        setCache(CACHE_KEYS.views, CACHE_KEYS.viewsTime, stats.viewCount);
+
+        return {
+          subs: stats.subscriberCount,
+          videos: stats.videoCount,
+          views: stats.viewCount
+        };
+      } catch (err) {
+        console.error('Erro ao buscar estatísticas do YouTube:', err);
+        return null;
       }
-    }
-  }
+    };
 
-  updateSubscriberCount();
-</script>
+    const updateUI = (subs, videos, views) => {
+      document.getElementById('subscriber-count').textContent = formatNumber(subs || 'N/A');
+      document.getElementById('video-count').textContent = formatNumber(videos || 'N/A');
+      document.getElementById('view-count').textContent = formatNumber(views || 'N/A');
+    };
 
-<script>
-  const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
-  const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const CACHE_DURATION_HOURS = 6;
+    let subs = getCached(CACHE_KEYS.subs, CACHE_KEYS.subsTime);
+    let videos = getCached(CACHE_KEYS.videos, CACHE_KEYS.videosTime);
+    let views = getCached(CACHE_KEYS.views, CACHE_KEYS.viewsTime);
 
-  const CACHE = {
-    subs: {
-      key: 'yt_subscriber_count',
-      timeKey: 'yt_subscriber_count_time'
-    },
-    videos: {
-      key: 'yt_video_count',
-      timeKey: 'yt_video_count_time'
-    }
-  };
-
-  function formatNumber(n) {
-    const num = parseInt(n, 10);
-    if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
-    if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
-    return num + '+';
-  }
-
-  async function fetchChannelStats() {
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const stats = data.items[0].statistics;
-
-      // Salva no cache
-      localStorage.setItem(CACHE.subs.key, stats.subscriberCount);
-      localStorage.setItem(CACHE.subs.timeKey, Date.now().toString());
-      localStorage.setItem(CACHE.videos.key, stats.videoCount);
-      localStorage.setItem(CACHE.videos.timeKey, Date.now().toString());
-
-      return {
-        subscribers: stats.subscriberCount,
-        videos: stats.videoCount
-      };
-    } catch (err) {
-      console.error('Erro ao buscar dados do YouTube:', err);
-      return null;
-    }
-  }
-
-  function getCachedValue(cacheKey, timeKey) {
-    const now = Date.now();
-    const timestamp = parseInt(localStorage.getItem(timeKey), 10);
-    const value = localStorage.getItem(cacheKey);
-    const age = now - timestamp;
-    const maxAge = CACHE_DURATION_HOURS * 60 * 60 * 1000;
-    return (value && timestamp && age < maxAge) ? value : null;
-  }
-
-  async function updateStats() {
-    const cachedSubs = getCachedValue(CACHE.subs.key, CACHE.subs.timeKey);
-    const cachedVideos = getCachedValue(CACHE.videos.key, CACHE.videos.timeKey);
-
-    if (cachedSubs && cachedVideos) {
-      document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-      document.getElementById('video-count').textContent = formatNumber(cachedVideos);
+    if (subs && videos && views) {
+      updateUI(subs, videos, views);
     } else {
-      const stats = await fetchChannelStats();
+      const stats = await fetchStats();
       if (stats) {
-        document.getElementById('subscriber-count').textContent = formatNumber(stats.subscribers);
-        document.getElementById('video-count').textContent = formatNumber(stats.videos);
+        updateUI(stats.subs, stats.videos, stats.views);
       } else {
-        // fallback: usa o cache mesmo expirado
-        if (cachedSubs) document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-        else document.getElementById('subscriber-count').textContent = 'N/A';
-
-        if (cachedVideos) document.getElementById('video-count').textContent = formatNumber(cachedVideos);
-        else document.getElementById('video-count').textContent = 'N/A';
+        // fallback: usa o cache mesmo expirado, se existir
+        subs = localStorage.getItem(CACHE_KEYS.subs);
+        videos = localStorage.getItem(CACHE_KEYS.videos);
+        views = localStorage.getItem(CACHE_KEYS.views);
+        updateUI(subs, videos, views);
       }
     }
-  }
-
-  updateStats();
+  })();
 </script>
 
-<script>
-  const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
-  const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const CACHE_DURATION_HOURS = 6;
 
-  const CACHE = {
-    subs: {
-      key: 'yt_subscriber_count',
-      timeKey: 'yt_subscriber_count_time'
-    },
-    videos: {
-      key: 'yt_video_count',
-      timeKey: 'yt_video_count_time'
-    },
-    views: {
-      key: 'yt_view_count',
-      timeKey: 'yt_view_count_time'
-    }
-  };
-
-  function formatNumber(n) {
-    const num = parseInt(n, 10);
-    if (num >= 1e9) return (num / 1e9).toFixed(1).replace('.', ',') + 'B+';
-    if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
-    if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
-    return num + '+';
-  }
-
-  async function fetchChannelStats() {
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const stats = data.items[0].statistics;
-
-      // Armazena no localStorage
-      localStorage.setItem(CACHE.subs.key, stats.subscriberCount);
-      localStorage.setItem(CACHE.subs.timeKey, Date.now().toString());
-
-      localStorage.setItem(CACHE.videos.key, stats.videoCount);
-      localStorage.setItem(CACHE.videos.timeKey, Date.now().toString());
-
-      localStorage.setItem(CACHE.views.key, stats.viewCount);
-      localStorage.setItem(CACHE.views.timeKey, Date.now().toString());
-
-      return {
-        subscribers: stats.subscriberCount,
-        videos: stats.videoCount,
-        views: stats.viewCount
-      };
-    } catch (err) {
-      console.error('Erro ao buscar dados da API do YouTube:', err);
-      return null;
-    }
-  }
-
-  function getCachedValue(cacheKey, timeKey) {
-    const now = Date.now();
-    const timestamp = parseInt(localStorage.getItem(timeKey), 10);
-    const value = localStorage.getItem(cacheKey);
-    const age = now - timestamp;
-    const maxAge = CACHE_DURATION_HOURS * 60 * 60 * 1000;
-    return (value && timestamp && age < maxAge) ? value : null;
-  }
-
-  async function updateStats() {
-    const cachedSubs = getCachedValue(CACHE.subs.key, CACHE.subs.timeKey);
-    const cachedVideos = getCachedValue(CACHE.videos.key, CACHE.videos.timeKey);
-    const cachedViews = getCachedValue(CACHE.views.key, CACHE.views.timeKey);
-
-    if (cachedSubs && cachedVideos && cachedViews) {
-      document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-      document.getElementById('video-count').textContent = formatNumber(cachedVideos);
-      document.getElementById('view-count').textContent = formatNumber(cachedViews);
-    } else {
-      const stats = await fetchChannelStats();
-      if (stats) {
-        document.getElementById('subscriber-count').textContent = formatNumber(stats.subscribers);
-        document.getElementById('video-count').textContent = formatNumber(stats.videos);
-        document.getElementById('view-count').textContent = formatNumber(stats.views);
-      } else {
-        if (cachedSubs) document.getElementById('subscriber-count').textContent = formatNumber(cachedSubs);
-        else document.getElementById('subscriber-count').textContent = 'N/A';
-
-        if (cachedVideos) document.getElementById('video-count').textContent = formatNumber(cachedVideos);
-        else document.getElementById('video-count').textContent = 'N/A';
-
-        if (cachedViews) document.getElementById('view-count').textContent = formatNumber(cachedViews);
-        else document.getElementById('view-count').textContent = 'N/A';
-      }
-    }
-  }
-
-  updateStats();
-</script>
 
 
 </body>
