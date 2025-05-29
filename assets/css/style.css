@@ -2163,7 +2163,7 @@ main {
 
 .stat-item {
     flex: 1; /* Garante tamanhos iguais */
-    min-width: 220px; /* Define um tamanho mínimo para evitar itens muito pequenos */
+    min-width: 300px; /* Define um tamanho mínimo para evitar itens muito pequenos */
     background-color: #bcb60467; /* Mantém a transparência */
     border-radius: 10px;
     padding: 30px;

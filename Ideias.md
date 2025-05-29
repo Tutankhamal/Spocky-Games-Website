@@ -32,3 +32,5 @@
 
 12 Scrlolling mais smooth no snap pra viewport
 
+
+Ajustar a ppacidade do background para deixar mais sutil, otimizar o desempenho do background passando para um web worker.

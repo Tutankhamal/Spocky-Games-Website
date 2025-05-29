@@ -158,10 +158,11 @@
                 <div class="stat-number">1M+</div>
                 <div class="stat-label">Visualizações</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">4</div>
-                <div class="stat-label">Anos de Canal</div>
-            </div>
+<div class="stat-item">
+    <div id="statNumber" class="stat-number"></div>
+    <div class="stat-label">Idade do Canal</div>
+</div>
+
           
         </div>
         
@@ -317,6 +318,32 @@
       document.getElementById('indexvideo-feed').innerHTML = '<p>Erro ao carregar os vídeos.</p>';
     });
 </script>
+<script>
+    function calcularIdadeCanal() {
+        const dataCriacao = new Date(2022, 10, 15); // 15 de novembro de 2022
+        const hoje = new Date();
+        
+        let anos = hoje.getFullYear() - dataCriacao.getFullYear();
+        let meses = hoje.getMonth() - dataCriacao.getMonth();
+        let dias = hoje.getDate() - dataCriacao.getDate();
+
+        if (dias < 0) {
+            meses--;
+            const ultimoDiaMesAnterior = new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
+            dias += ultimoDiaMesAnterior;
+        }
+
+        if (meses < 0) {
+            anos--;
+            meses += 12;
+        }
+
+        document.getElementById("statNumber").innerText = `${anos} anos ${meses} meses ${dias} dias`;
+    }
+
+    window.onload = calcularIdadeCanal;
+</script>
+
 
 
 
