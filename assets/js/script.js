@@ -173,9 +173,14 @@ let width = canvas.width = window.innerWidth;
 let height = canvas.height = window.innerHeight;
 
 let baseTileSize = 40;
-let tileSize;
-let cols, rows, halfCols;
+const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+let tileSize = isMobile ? baseTileSize : baseTileSize * 1.2;
+
+let cols = Math.floor(width / tileSize);
+let rows = Math.floor(height / tileSize);
+let halfCols = Math.floor(cols / 2);
 let maze = [];
+
 const mazeColors = [
   '#fb234e15', '#f8862215', '#f0ed2115',
   '#47ef2115', '#23d6e315', '#2326e015', '#a221dd15'
@@ -185,8 +190,6 @@ let mazeColor = baseMazeColor;
 let rgbMode = false;
 let rgbHue = 0;
 let fruit = null;
-
-const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -277,18 +280,18 @@ class Particle {
   reset() {
     this.x = Math.random() * width;
     this.y = Math.random() * height;
-    this.size = Math.floor(Math.random() * 3 + 2); // tamanho maior e inteiro
+    this.size = Math.floor(Math.random() * 3 + 2);
     this.baseX = this.x;
     this.baseY = this.y;
     this.hue = Math.floor(Math.random() * 360);
     this.hueSpeed = Math.random() * 0.5 + 0.1;
   }
   draw() {
-    const color = `hsl(${this.hue}, 100%, 60%)`;
+    const color = `hsla(${this.hue}, 100%, 60%, 0.5)`; // 50% opacidade
     ctx.fillStyle = color;
     ctx.shadowColor = color;
     ctx.shadowBlur = 4;
-    ctx.fillRect(this.x, this.y, this.size, this.size); // quadrado ao invés de círculo
+    ctx.fillRect(this.x, this.y, this.size, this.size);
   }
   update() {
     this.hue = (this.hue + this.hueSpeed) % 360;
@@ -306,7 +309,6 @@ class Particle {
     }
   }
 }
-
 
 let particles = [];
 
@@ -509,18 +511,12 @@ function spawnFruit() {
 function resizeCanvasAndMaze() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
-
-  tileSize = isMobile ? baseTileSize * 0.85 : baseTileSize * 1.25;
-
+  tileSize = isMobile ? baseTileSize : baseTileSize * 1.2;
   cols = Math.floor(width / tileSize);
   rows = Math.floor(height / tileSize);
   halfCols = Math.floor(cols / 2);
-
   generateClassicMaze();
-
-  const particleCount = isMobile ? 200 : 300;
-  particles = [];
-  for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+  particles = Array.from({ length: 80 }, () => new Particle());
 }
 
 function animate() {
@@ -530,25 +526,15 @@ function animate() {
     p.draw();
   }
   drawMaze();
+  drawFruit();
   updatePacman();
   drawPacman();
-  drawFruit();
-  if (!fruit) spawnFruit();
   requestAnimationFrame(animate);
 }
 
-let resizePending = false;
-window.addEventListener('resize', () => {
-  if (!resizePending) {
-    resizePending = true;
-    requestAnimationFrame(() => {
-      resizeCanvasAndMaze();
-      resizePending = false;
-    });
-  }
-});
-
+window.addEventListener('resize', resizeCanvasAndMaze);
 resizeCanvasAndMaze();
+spawnFruit();
 animate();
 
 
