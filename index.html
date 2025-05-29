@@ -149,10 +149,10 @@
             </div>
                     <div class="stats-section">
                       
-            <div class="stat-item">
-                <div class="stat-number">5K+</div>
-                <div class="stat-label">Inscritos</div>
-            </div>
+<div class="stat-item">
+  <div class="stat-number" id="subscriber-count">Carregando...</div>
+  <div class="stat-label">Inscritos</div>
+</div>
             <div class="stat-item">
                 <div class="stat-number">1100+</div>
                 <div class="stat-label">Vídeos</div>
@@ -399,6 +399,32 @@
 </script>
 
 
+<script>
+  async function fetchSubscriberCount() {
+    const apiKey = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+    const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const subscribers = data.items[0].statistics.subscriberCount;
+      document.getElementById('subscriber-count').textContent = formatNumber(subscribers);
+    } catch (error) {
+      console.error('Erro ao buscar inscritos do canal:', error);
+      document.getElementById('subscriber-count').textContent = 'N/A';
+    }
+  }
+
+  function formatNumber(n) {
+    const num = parseInt(n, 10);
+    if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
+    if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
+    return num;
+  }
+
+  fetchSubscriberCount();
+</script>
 
 
 
