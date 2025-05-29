@@ -129,38 +129,11 @@
     </footer>
     
     <script src="/assets/js/script.js"></script>
-    <script>
+<script>
   const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
   const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-
-  async function getUploadsPlaylistId() {
-    const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`);
-    const data = await res.json();
-    return data.items[0].contentDetails.relatedPlaylists.uploads;
-  }
-
-  async function getAllVideos(playlistId) {
-    let videos = [];
-    let pageToken = '';
-    do {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${API_KEY}`);
-      const data = await res.json();
-      videos = videos.concat(data.items);
-      pageToken = data.nextPageToken || '';
-    } while (pageToken);
-    return videos.map(v => v.contentDetails.videoId);
-  }
-
-  async function getVideoDetails(ids) {
-    const chunks = [];
-    for (let i = 0; i < ids.length; i += 50) {
-      const chunk = ids.slice(i, i + 50);
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,liveStreamingDetails,contentDetails&id=${chunk.join(',')}&key=${API_KEY}`);
-      const data = await res.json();
-      chunks.push(...data.items);
-    }
-    return chunks;
-  }
+  const CACHE_KEY = 'curiosities_cache';
+  const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 horas
 
   function formatDate(iso) {
     const d = new Date(iso);
@@ -194,53 +167,108 @@
       </div>`;
   }
 
-  async function renderCuriosities() {
-    const playlistId = await getUploadsPlaylistId();
-    const ids = await getAllVideos(playlistId);
-    const videos = await getVideoDetails(ids);
+  async function getUploadsPlaylistId() {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`);
+    const data = await res.json();
+    return data.items[0].contentDetails.relatedPlaylists.uploads;
+  }
 
-    // Vídeo mais visto
-    const mostViewed = videos.reduce((a, b) => (+a.statistics.viewCount > +b.statistics.viewCount ? a : b));
-    
-    // Live mais longa
-    const lives = videos.filter(v => v.liveStreamingDetails?.actualEndTime);
-    const longestLive = lives.reduce((a, b) => {
-      const aDur = getDurationSeconds(a.liveStreamingDetails.actualStartTime, a.liveStreamingDetails.actualEndTime);
-      const bDur = getDurationSeconds(b.liveStreamingDetails.actualStartTime, b.liveStreamingDetails.actualEndTime);
-      return aDur > bDur ? a : b;
-    }, lives[0]);
+  async function getAllVideos(playlistId) {
+    let videos = [];
+    let pageToken = '';
+    do {
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${API_KEY}`);
+      const data = await res.json();
+      videos = videos.concat(data.items);
+      pageToken = data.nextPageToken || '';
+    } while (pageToken);
+    return videos.map(v => v.contentDetails.videoId);
+  }
 
-    // Primeira live
-    const firstLive = lives.reduce((a, b) => (
-      new Date(a.liveStreamingDetails.actualStartTime) < new Date(b.liveStreamingDetails.actualStartTime) ? a : b
-    ), lives[0]);
+  async function getVideoDetails(ids) {
+    const chunks = [];
+    for (let i = 0; i < ids.length; i += 50) {
+      const chunk = ids.slice(i, i + 50);
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,liveStreamingDetails,contentDetails&id=${chunk.join(',')}&key=${API_KEY}`);
+      const data = await res.json();
+      chunks.push(...data.items);
+    }
+    return chunks;
+  }
 
-    const curiosities = [
-      {
-        title: mostViewed.snippet.title,
-        date: formatDate(mostViewed.snippet.publishedAt),
-        description: `Este é o vídeo mais assistido do canal, com mais de ${Number(mostViewed.statistics.viewCount).toLocaleString('pt-BR')} visualizações.`,
-        url: `https://www.youtube.com/watch?v=${mostViewed.id}`,
-        thumbnail: mostViewed.snippet.thumbnails.medium.url,
-        tag: "Mais Visto"
-      },
-      {
-        title: longestLive.snippet.title,
-        date: formatDate(longestLive.snippet.publishedAt),
-        description: `Esta foi a live mais longa do canal, com duração de ${secondsToHMS(getDurationSeconds(longestLive.liveStreamingDetails.actualStartTime, longestLive.liveStreamingDetails.actualEndTime))}.`,
-        url: `https://www.youtube.com/watch?v=${longestLive.id}`,
-        thumbnail: longestLive.snippet.thumbnails.medium.url,
-        tag: "Live Mais Longa"
-      },
-      {
-        title: firstLive.snippet.title,
-        date: formatDate(firstLive.snippet.publishedAt),
-        description: `Esta foi a primeira live registrada no canal.`,
-        url: `https://www.youtube.com/watch?v=${firstLive.id}`,
-        thumbnail: firstLive.snippet.thumbnails.medium.url,
-        tag: "Primeira Live"
+  function saveToCache(data) {
+    const payload = {
+      timestamp: Date.now(),
+      data
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+  }
+
+  function loadFromCache() {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Date.now() - parsed.timestamp < CACHE_TTL) {
+        return parsed.data;
       }
-    ];
+    } catch (e) {
+      return null;
+    }
+
+    return null;
+  }
+
+  async function renderCuriosities() {
+    let curiosities = loadFromCache();
+    if (!curiosities) {
+      const playlistId = await getUploadsPlaylistId();
+      const ids = await getAllVideos(playlistId);
+      const videos = await getVideoDetails(ids);
+
+      const mostViewed = videos.reduce((a, b) => (+a.statistics.viewCount > +b.statistics.viewCount ? a : b));
+
+      const lives = videos.filter(v => v.liveStreamingDetails?.actualEndTime);
+      const longestLive = lives.reduce((a, b) => {
+        const aDur = getDurationSeconds(a.liveStreamingDetails.actualStartTime, a.liveStreamingDetails.actualEndTime);
+        const bDur = getDurationSeconds(b.liveStreamingDetails.actualStartTime, b.liveStreamingDetails.actualEndTime);
+        return aDur > bDur ? a : b;
+      }, lives[0]);
+
+      const firstLive = lives.reduce((a, b) => (
+        new Date(a.liveStreamingDetails.actualStartTime) < new Date(b.liveStreamingDetails.actualStartTime) ? a : b
+      ), lives[0]);
+
+      curiosities = [
+        {
+          title: mostViewed.snippet.title,
+          date: formatDate(mostViewed.snippet.publishedAt),
+          description: `Este é o vídeo mais assistido do canal, com mais de ${Number(mostViewed.statistics.viewCount).toLocaleString('pt-BR')} visualizações.`,
+          url: `https://www.youtube.com/watch?v=${mostViewed.id}`,
+          thumbnail: mostViewed.snippet.thumbnails.medium.url,
+          tag: "Mais Visto"
+        },
+        {
+          title: longestLive.snippet.title,
+          date: formatDate(longestLive.snippet.publishedAt),
+          description: `Esta foi a live mais longa do canal, com duração de ${secondsToHMS(getDurationSeconds(longestLive.liveStreamingDetails.actualStartTime, longestLive.liveStreamingDetails.actualEndTime))}.`,
+          url: `https://www.youtube.com/watch?v=${longestLive.id}`,
+          thumbnail: longestLive.snippet.thumbnails.medium.url,
+          tag: "Live Mais Longa"
+        },
+        {
+          title: firstLive.snippet.title,
+          date: formatDate(firstLive.snippet.publishedAt),
+          description: `Esta foi a primeira live registrada no canal.`,
+          url: `https://www.youtube.com/watch?v=${firstLive.id}`,
+          thumbnail: firstLive.snippet.thumbnails.medium.url,
+          tag: "Primeira Live"
+        }
+      ];
+
+      saveToCache(curiosities);
+    }
 
     document.getElementById('curiosities-section').innerHTML = curiosities.map(createCard).join('');
   }
