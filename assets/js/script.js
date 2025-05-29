@@ -550,6 +550,9 @@ window.addEventListener('resize', () => {
   placeFruit();
 });
 
+document.getElementById('startBtn').addEventListener('click', () => {
+  rgbMode = true;
+});
 
 
 
