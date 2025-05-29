@@ -129,7 +129,7 @@
     </footer>
     
     <script src="/assets/js/script.js"></script>
-    <script>
+<script>
 (() => {
   const startBtn = document.getElementById('startBtn');
   const namesInput = document.getElementById('namesInput');
@@ -141,9 +141,12 @@
   let animationFrameId = null;
   let animationStart = null;
 
+  const roletaAudio = new Audio('/assets/audio/roleta.mp3');
+  const zeldaAudio = new Audio('/assets/audio/zelda.mp3');
+
   function randomString(length) {
     let str = '';
-    for(let i=0; i<length; i++) {
+    for(let i = 0; i < length; i++) {
       str += letters.charAt(Math.floor(Math.random() * letters.length));
     }
     return str;
@@ -190,7 +193,7 @@
     }
 
     resultText.textContent = '';
-    resultText.style.animation = 'none'; // reset bounce
+    resultText.style.animation = 'none';
 
     const rawNames = namesInput.value.trim();
     if(!rawNames) {
@@ -206,13 +209,22 @@
 
     const chosenName = names[Math.floor(Math.random() * names.length)];
 
+    // Toca som da roleta ao iniciar o sorteio
+    roletaAudio.currentTime = 0;
+    roletaAudio.play();
+
     animateMatrixSuspense(chosenName, () => {
+      // Toca som do Zelda ao mostrar resultado
+      zeldaAudio.currentTime = 0;
+      zeldaAudio.play();
+
       resultText.textContent = `Sorteado: ${chosenName}`;
-      resultText.style.animation = 'bounce 1.2s ease infinite'; // reaplica bounce
+      resultText.style.animation = 'bounce 1.2s ease infinite';
     });
   });
 })();
 </script>
+
     
 </body>
 </html>
