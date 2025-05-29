@@ -550,10 +550,14 @@ window.addEventListener('resize', () => {
   placeFruit();
 });
 
-document.getElementById('startBtn').addEventListener('click', () => {
-  rgbMode = true;
+document.addEventListener('DOMContentLoaded', () => {
+  const startButton = document.getElementById('startBtn');
+  if (startButton) {
+    startButton.addEventListener('click', () => {
+      rgbMode = true;
+    });
+  }
 });
-
 
 
 
