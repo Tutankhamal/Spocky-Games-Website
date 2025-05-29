@@ -74,10 +74,17 @@
             </div>
         </section>
         
-        <section class="game-section snap-section">
+        <section class="game-section  snap-section">
             
 
-                    
+  <h2 class="section-title">Roleta Spocky Games</h2>
+  <div class="matrix-container">
+    <textarea id="namesInput" class="matrix-textarea" placeholder="Digite um nome por linha..."></textarea>
+    <button id="startBtn" class="matrix-button">Sortear</button>
+    <div id="roulette" class="matrix-roulette"></div>
+    <div id="resultText" class="matrix-result"></div>
+  </div>
+         
 
 
                 
@@ -122,6 +129,90 @@
     </footer>
     
     <script src="/assets/js/script.js"></script>
+    <script>
+(() => {
+  const startBtn = document.getElementById('startBtn');
+  const namesInput = document.getElementById('namesInput');
+  const roulette = document.getElementById('roulette');
+  const resultText = document.getElementById('resultText');
+
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+  let names = [];
+  let animationFrameId = null;
+  let animationStart = null;
+
+  function randomString(length) {
+    let str = '';
+    for(let i=0; i<length; i++) {
+      str += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    return str;
+  }
+
+  function matrixSuspenseLine(finalStr, maxLength, progress) {
+    const finalLen = finalStr.length;
+    const currentLen = Math.floor(maxLength - (maxLength - finalLen) * progress);
+    if(progress < 1) {
+      return randomString(currentLen);
+    } else {
+      return finalStr.toUpperCase();
+    }
+  }
+
+  function animateMatrixSuspense(finalName, onComplete) {
+    const duration = 30000; // 30 segundos
+    animationStart = null;
+    const maxLength = Math.max(30, finalName.length + 10);
+
+    function step(timestamp) {
+      if (!animationStart) animationStart = timestamp;
+      const elapsed = timestamp - animationStart;
+      let progress = elapsed / duration;
+      if (progress > 1) progress = 1;
+
+      const line = matrixSuspenseLine(finalName, maxLength, progress);
+      roulette.textContent = line;
+
+      if(progress < 1) {
+        animationFrameId = requestAnimationFrame(step);
+      } else {
+        if(onComplete) onComplete();
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(step);
+  }
+
+  startBtn.addEventListener('click', () => {
+    if(animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+
+    resultText.textContent = '';
+    resultText.style.animation = 'none'; // reset bounce
+
+    const rawNames = namesInput.value.trim();
+    if(!rawNames) {
+      alert('Por favor, digite pelo menos um nome.');
+      return;
+    }
+
+    names = rawNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+    if(names.length === 0) {
+      alert('Digite nomes válidos.');
+      return;
+    }
+
+    const chosenName = names[Math.floor(Math.random() * names.length)];
+
+    animateMatrixSuspense(chosenName, () => {
+      resultText.textContent = `Sorteado: ${chosenName}`;
+      resultText.style.animation = 'bounce 1.2s ease infinite'; // reaplica bounce
+    });
+  });
+})();
+</script>
     
 </body>
 </html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spocky Games - Roleta Matrix</title>
+  <style>
+    :root {
+      --primary-color: #be1c39;
+      --text-color: #ffffff;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      text-align: center;
+    }
+
+    .matrix-container {
+      background: rgba(255, 0, 0, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 700px;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .matrix-textarea {
+      width: 100%;
+      height: 140px;
+      font-size: 1.2em;
+      border-radius: 12px;
+      border: none;
+      padding: 12px 16px;
+      resize: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .matrix-button {
+      padding: 16px 36px;
+      background-color: #0000006b;
+      border: 2px solid var(--primary-color);
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: 1.2em;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      margin-top: 10px;
+    }
+
+    .matrix-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(190, 28, 57, 0.4), transparent);
+      transition: all 0.5s ease;
+      z-index: 0;
+    }
+
+    .matrix-button:hover {
+      box-shadow: 0 0 12px rgba(190, 28, 57, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .matrix-button:hover::before {
+      left: 100%;
+    }
+
+    .matrix-roulette {
+      margin-top: 20px;
+      font-size: 2em;
+      letter-spacing: 6px;
+      text-align: center;
+      font-family: monospace;
+      font-weight: 700;
+      min-height: 60px;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 0, 0, 0.3);
+      background: rgba(255, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .matrix-result {
+      margin-top: 30px;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      animation: bounce 1.2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Spocky Games</h1>
+  <div class="matrix-container">
+    <textarea id="namesInput" class="matrix-textarea" placeholder="Digite um nome por linha..."></textarea>
+    <button id="startBtn" class="matrix-button">Sortear</button>
+    <div id="roulette" class="matrix-roulette"></div>
+    <div id="resultText" class="matrix-result"></div>
+  </div>
+
+  <script>
+    (() => {
+      const startBtn = document.getElementById('startBtn');
+      const namesInput = document.getElementById('namesInput');
+      const roulette = document.getElementById('roulette');
+      const resultText = document.getElementById('resultText');
+
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+      let names = [];
+      let animationFrameId = null;
+      let animationStart = null;
+
+      function randomString(length) {
+        let str = '';
+        for(let i=0; i<length; i++) {
+          str += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        return str;
+      }
+
+      function matrixSuspenseLine(finalStr, maxLength, progress) {
+        const finalLen = finalStr.length;
+        const currentLen = Math.floor(maxLength - (maxLength - finalLen) * progress);
+        if(progress < 1) {
+          return randomString(currentLen);
+        } else {
+          return finalStr.toUpperCase();
+        }
+      }
+
+      function animateMatrixSuspense(finalName, onComplete) {
+        const duration = 30000; // 30 segundos
+        animationStart = null;
+        const maxLength = Math.max(30, finalName.length + 10);
+
+        function step(timestamp) {
+          if (!animationStart) animationStart = timestamp;
+          const elapsed = timestamp - animationStart;
+          let progress = elapsed / duration;
+          if (progress > 1) progress = 1;
+
+          const line = matrixSuspenseLine(finalName, maxLength, progress);
+          roulette.textContent = line;
+
+          if(progress < 1) {
+            animationFrameId = requestAnimationFrame(step);
+          } else {
+            if(onComplete) onComplete();
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(step);
+      }
+
+      startBtn.addEventListener('click', () => {
+        if(animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        resultText.textContent = '';
+        resultText.style.animation = 'none'; // reset bounce
+
+        const rawNames = namesInput.value.trim();
+        if(!rawNames) {
+          alert('Por favor, digite pelo menos um nome.');
+          return;
+        }
+
+        names = rawNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+        if(names.length === 0) {
+          alert('Digite nomes válidos.');
+          return;
+        }
+
+        const chosenName = names[Math.floor(Math.random() * names.length)];
+
+        animateMatrixSuspense(chosenName, () => {
+          resultText.textContent = `Sorteado: ${chosenName}`;
+          resultText.style.animation = 'bounce 1.2s ease infinite';
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
