@@ -3074,7 +3074,7 @@ footer {
   .liveplayer-buttons a {
     width: 100%;
   }
-}
+
 
 /* Ajuste extra para telas muito grandes */
 @media (min-width: 1440px) {
@@ -3131,26 +3131,32 @@ footer {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 4px #be1c3960;
-  backdrop-filter: blur(4px) !important ;
+  backdrop-filter: blur(4px) !important;
 }
 
+/* Hover */
 .ondemand-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 12px #be1c39a0;
 }
 
-.ondemand-card iframe {
+/* Adaptado para lite-youtube */
+.ondemand-card lite-youtube {
+  display: block;
   width: 100%;
   height: 180px;
   border: none;
+  border-radius: 0;
 }
 
+/* Título */
 .ondemand-card .title {
   padding: 1rem;
   font-size: 0.95rem;
   font-weight: 600;
   text-shadow: 1px 1px 1px #000;
 }
+
 
 .indexvideo-section {
   padding: 2rem;
