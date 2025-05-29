@@ -95,98 +95,7 @@
   </a>
 </section>
 
-  <!-- <section class="liveplayer-container snap-section">
-    <div class="liveplayer-box" id="liveplayer-box">
-      <div class="liveplayer-title" id="liveplayer-title">Carregando transmissão retrô...</div>
-      <div class="liveplayer-video-wrapper" id="liveplayer-video"></div>
-      <div class="liveplayer-chat-wrapper" id="liveplayer-chat"></div>
-      <div class="liveplayer-buttons" id="liveplayer-buttons" style="display: none;"></div>
-    </div>
-  </section> -->
-                <!--
-                <div class="live-info">
-                    <h2>Jogando Super Nintendo Classics</h2>
-                    <p class="live-description">
-                        Mateus Spocky está jogando os clássicos do Super Nintendo! Venha relembrar os jogos que marcaram época e participe do chat ao vivo.
-                    </p>
-                    <div class="live-meta">
-                        <div class="live-viewers">
-                            <i class="fas fa-eye"></i>
-                            <span>1.2K espectadores</span>
-                        </div>
-                        <div class="live-started">
-                            <i class="fas fa-clock"></i>
-                            <span>Iniciou há 1 hora e 23 minutos</span>
-                        </div>
-                    </div>
-                    <div class="live-buttons">
-                        <a href="https://youtube.com" target="_blank" class="neon-button">Assistir no YouTube</a>
-                        <button class="neon-button secondary">Receber Notificações</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="schedule-section" data-aos="fade-up">
-                <h2 class="section-title">Próximas Transmissões</h2>
-                <div class="schedule-grid">
-                    <div class="schedule-item">
-                        <div class="schedule-date">
-                            <div class="day">15</div>
-                            <div class="month">JUN</div>
-                        </div>
-                        <div class="schedule-info">
-                            <h3>Mega Drive Classics</h3>
-                            <p>Jogando os melhores títulos do Mega Drive</p>
-                            <div class="schedule-time">
-                                <i class="fas fa-clock"></i>
-                                <span>20:00 - 23:00</span>
-                            </div>
-                        </div>
-                        <button class="reminder-button">
-                            <i class="fas fa-bell"></i>
-                            <span>Lembrar</span>
-                        </button>
-                    </div>
-                    
-                    <div class="schedule-item">
-                        <div class="schedule-date">
-                            <div class="day">18</div>
-                            <div class="month">JUN</div>
-                        </div>
-                        <div class="schedule-info">
-                            <h3>PlayStation 1 Raridades</h3>
-                            <p>Jogos raros e esquecidos do PlayStation 1</p>
-                            <div class="schedule-time">
-                                <i class="fas fa-clock"></i>
-                                <span>19:00 - 22:00</span>
-                            </div>
-                        </div>
-                        <button class="reminder-button">
-                            <i class="fas fa-bell"></i>
-                            <span>Lembrar</span>
-                        </button>
-                    </div>
-                    
-                    <div class="schedule-item">
-                        <div class="schedule-date">
-                            <div class="day">22</div>
-                            <div class="month">JUN</div>
-                        </div>
-                        <div class="schedule-info">
-                            <h3>Nintendo 64 Speedruns</h3>
-                            <p>Tentando bater recordes em jogos do N64</p>
-                            <div class="schedule-time">
-                                <i class="fas fa-clock"></i>
-                                <span>20:00 - 00:00</span>
-                            </div>
-                        </div>
-                        <button class="reminder-button">
-                            <i class="fas fa-bell"></i>
-                            <span>Lembrar</span>
-                        </button>
-                    </div>
-                </div>
-            </div> -->
+  
         </section> 
     </main>  
     <section class="parceiros-carroussel snap-section">
@@ -230,30 +139,51 @@
     
     <script src="/assets/js/script.js"></script>
 <script>
+  const apiKey = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
   const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-  const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
+  const domain = location.hostname;
 
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(data => {
-      const items = data.items.filter(item => !item.title.toLowerCase().includes('#shorts'));
+  async function fetchLiveOrLatestVideo() {
+    try {
+      // 1. Tenta buscar live ativa
+      const liveRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`);
+      const liveData = await liveRes.json();
+      const liveVideo = liveData.items?.[0];
 
-      if (!items.length) {
+      let chosenVideo = null;
+      let isLive = false;
+
+      if (liveVideo) {
+        isLive = true;
+        chosenVideo = {
+          id: liveVideo.id.videoId,
+          title: liveVideo.snippet.title
+        };
+      } else {
+        // 2. Caso não tenha live, pega últimos vídeos (ignorando shorts)
+        const videoRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&type=video&key=${apiKey}`);
+        const videoData = await videoRes.json();
+        const video = videoData.items.find(item => !item.snippet.title.toLowerCase().includes('#shorts'));
+
+        if (video) {
+          chosenVideo = {
+            id: video.id.videoId,
+            title: video.snippet.title
+          };
+        }
+      }
+
+      if (!chosenVideo) {
         document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
         return;
       }
 
-      const liveVideo = items.find(item => item.thumbnail && item.thumbnail.includes('hqdefault_live.jpg'));
-      const chosenVideo = liveVideo || items[0];
-      const videoId = chosenVideo.link.split('v=')[1];
-      const title = chosenVideo.title;
-      const isLive = !!liveVideo;
-      const domain = location.hostname;
+      const { id: videoId, title } = chosenVideo;
 
+      // Título
       document.getElementById('liveplayer-title').textContent = title;
 
-      // Player otimizado com lite-youtube-embed
+      // Player
       document.getElementById('liveplayer-video').innerHTML = `
         <lite-youtube 
           videoid="${videoId}" 
@@ -261,7 +191,7 @@
         </lite-youtube>
       `;
 
-      // Exibe chat se live estiver ao vivo
+      // Chat ao vivo
       if (isLive) {
         document.getElementById('liveplayer-chat').style.display = 'block';
         document.getElementById('liveplayer-chat').innerHTML = `
@@ -277,12 +207,16 @@
         <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
       `;
       document.getElementById('liveplayer-buttons').style.display = 'flex';
-    })
-    .catch(err => {
+
+    } catch (err) {
       console.error('Erro ao carregar player:', err);
       document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
-    });
+    }
+  }
+
+  fetchLiveOrLatestVideo();
 </script>
+
 
     
 </body>
