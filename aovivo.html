@@ -140,64 +140,59 @@
     <script src="/assets/js/script.js"></script>
 <script>
   const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const domain = location.hostname;
-  const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+  const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+  const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
 
-  async function fetchLatestVideoViaRSS() {
-    try {
-      const response = await fetch(rssFeedUrl);
-      const text = await response.text();
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+      const items = data.items.filter(item => !item.title.toLowerCase().includes('#shorts'));
 
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(text, "text/xml");
-
-      // Busca todos os itens do feed
-      const items = Array.from(xml.querySelectorAll("entry"));
-
-      // Encontra o primeiro vídeo que não é um short (não contém #shorts no título)
-      const validVideo = items.find(item => {
-        const title = item.querySelector("title").textContent;
-        return !title.toLowerCase().includes("#shorts");
-      });
-
-      if (!validVideo) {
-        document.getElementById("liveplayer-title").textContent = "Nenhum vídeo válido encontrado.";
+      if (!items.length) {
+        document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
         return;
       }
 
-      const title = validVideo.querySelector("title").textContent;
-      const videoUrl = validVideo.querySelector("link").getAttribute("href");
-      const videoId = new URL(videoUrl).searchParams.get("v");
+      const liveVideo = items.find(item => item.thumbnail && item.thumbnail.includes('hqdefault_live.jpg'));
+      const chosenVideo = liveVideo || items[0];
+      const videoId = chosenVideo.link.split('v=')[1];
+      const title = chosenVideo.title;
+      const isLive = !!liveVideo;
+      const domain = location.hostname;
 
-      // Atualiza título
-      document.getElementById("liveplayer-title").textContent = title;
+      document.getElementById('liveplayer-title').textContent = title;
 
-      // Atualiza o player com <lite-youtube>
-      document.getElementById("liveplayer-video").innerHTML = `
+      // Player otimizado com lite-youtube-embed
+      document.getElementById('liveplayer-video').innerHTML = `
         <lite-youtube 
           videoid="${videoId}" 
           playlabel="${title.replace(/"/g, "'")}">
         </lite-youtube>
       `;
 
-      // Oculta chat (não temos como saber se é live)
-      document.getElementById("liveplayer-chat").style.display = "none";
+      // Exibe chat se live estiver ao vivo
+      if (isLive) {
+        document.getElementById('liveplayer-chat').style.display = 'block';
+        document.getElementById('liveplayer-chat').innerHTML = `
+          <iframe 
+            src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${domain}" 
+            allowfullscreen>
+          </iframe>`;
+      }
 
       // Botões
-      document.getElementById("liveplayer-buttons").innerHTML = `
+      document.getElementById('liveplayer-buttons').innerHTML = `
         <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Ver no YouTube</a>
         <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
       `;
-      document.getElementById("liveplayer-buttons").style.display = "flex";
-
-    } catch (err) {
-      console.error("Erro ao carregar player via RSS:", err);
-      document.getElementById("liveplayer-title").textContent = "Erro ao carregar o vídeo.";
-    }
-  }
-
-  fetchLatestVideoViaRSS();
+      document.getElementById('liveplayer-buttons').style.display = 'flex';
+    })
+    .catch(err => {
+      console.error('Erro ao carregar player:', err);
+      document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
+    });
 </script>
+
 
 
 

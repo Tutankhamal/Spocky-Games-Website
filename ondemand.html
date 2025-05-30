@@ -126,14 +126,11 @@
     <script src="/assets/js/script.js"></script>
 
     <script>
-  const apiKey = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
-  const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-
   async function fetchLives() {
+    const RSS_URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw";
+
     try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&type=video&key=${apiKey}`
-      );
+      const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`);
       const data = await response.json();
 
       if (!data.items || !Array.isArray(data.items)) return;
@@ -141,12 +138,12 @@
       const grid = document.getElementById("ondemand-grid");
 
       const lives = data.items
-        .filter(item => !item.snippet.title.toLowerCase().includes("#shorts"))
+        .filter(item => !item.title.toLowerCase().includes("#shorts"))
         .slice(0, 10);
 
-      lives.forEach(item => {
-        const videoId = item.id.videoId;
-        const title = item.snippet.title;
+      lives.forEach(live => {
+        const match = live.link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+        const videoId = match ? match[1] : null;
 
         if (!videoId) return;
 
@@ -156,20 +153,21 @@
         card.innerHTML = `
           <lite-youtube 
             videoid="${videoId}" 
-            playlabel="${title.replace(/"/g, "'")}">
+            playlabel="${live.title.replace(/"/g, "'")}">
           </lite-youtube>
-          <div class="title">${title}</div>
+          <div class="title">${live.title}</div>
         `;
 
         grid.appendChild(card);
       });
     } catch (error) {
-      console.error("Erro ao carregar os vídeos:", error);
+      console.error("Erro ao carregar o RSS:", error);
     }
   }
 
   document.addEventListener("DOMContentLoaded", fetchLives);
 </script>
+
 
 
 

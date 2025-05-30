@@ -305,88 +305,48 @@
 
 
 <script>
-  (async () => {
-    const API_KEY = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
-    const CHANNEL_ID = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-    const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 horas em ms
+  async function fetchLives() {
+    const RSS_URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw";
 
-    const CACHE_KEYS = {
-      subs: 'yt_subscriber_count',
-      subsTime: 'yt_subscriber_count_time',
-      videos: 'yt_video_count',
-      videosTime: 'yt_video_count_time',
-      views: 'yt_view_count',
-      viewsTime: 'yt_view_count_time'
-    };
+    try {
+      const response = await fetch(https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)});
+      const data = await response.json();
 
-    const formatNumber = (n) => {
-      const num = parseInt(n, 10);
-      if (num >= 1e9) return (num / 1e9).toFixed(1).replace('.', ',') + 'B+';
-      if (num >= 1e6) return (num / 1e6).toFixed(1).replace('.', ',') + 'M+';
-      if (num >= 1e3) return (num / 1e3).toFixed(1).replace('.', ',') + 'K+';
-      return num + '+';
-    };
+      if (!data.items || !Array.isArray(data.items)) return;
 
-    const getCached = (key, timeKey) => {
-      const now = Date.now();
-      const value = localStorage.getItem(key);
-      const timestamp = parseInt(localStorage.getItem(timeKey), 10);
-      return value && timestamp && now - timestamp < CACHE_DURATION ? value : null;
-    };
+      const grid = document.getElementById("ondemand-grid");
 
-    const setCache = (key, timeKey, value) => {
-      localStorage.setItem(key, value);
-      localStorage.setItem(timeKey, Date.now().toString());
-    };
+      const lives = data.items
+        .filter(item => !item.title.toLowerCase().includes("#shorts"))
+        .slice(0, 10);
 
-    const fetchStats = async () => {
-      try {
-        const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        const stats = data.items[0].statistics;
+      lives.forEach(live => {
+        const match = live.link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+        const videoId = match ? match[1] : null;
 
-        setCache(CACHE_KEYS.subs, CACHE_KEYS.subsTime, stats.subscriberCount);
-        setCache(CACHE_KEYS.videos, CACHE_KEYS.videosTime, stats.videoCount);
-        setCache(CACHE_KEYS.views, CACHE_KEYS.viewsTime, stats.viewCount);
+        if (!videoId) return;
 
-        return {
-          subs: stats.subscriberCount,
-          videos: stats.videoCount,
-          views: stats.viewCount
-        };
-      } catch (err) {
-        console.error('Erro ao buscar estatísticas do YouTube:', err);
-        return null;
-      }
-    };
+        const card = document.createElement("div");
+        card.className = "ondemand-card";
 
-    const updateUI = (subs, videos, views) => {
-      document.getElementById('subscriber-count').textContent = formatNumber(subs || 'N/A');
-      document.getElementById('video-count').textContent = formatNumber(videos || 'N/A');
-      document.getElementById('view-count').textContent = formatNumber(views || 'N/A');
-    };
+        card.innerHTML = 
+          <lite-youtube 
+            videoid="${videoId}" 
+            playlabel="${live.title.replace(/"/g, "'")}">
+          </lite-youtube>
+          <div class="title">${live.title}</div>
+        ;
 
-    let subs = getCached(CACHE_KEYS.subs, CACHE_KEYS.subsTime);
-    let videos = getCached(CACHE_KEYS.videos, CACHE_KEYS.videosTime);
-    let views = getCached(CACHE_KEYS.views, CACHE_KEYS.viewsTime);
-
-    if (subs && videos && views) {
-      updateUI(subs, videos, views);
-    } else {
-      const stats = await fetchStats();
-      if (stats) {
-        updateUI(stats.subs, stats.videos, stats.views);
-      } else {
-        // fallback: usa o cache mesmo expirado, se existir
-        subs = localStorage.getItem(CACHE_KEYS.subs);
-        videos = localStorage.getItem(CACHE_KEYS.videos);
-        views = localStorage.getItem(CACHE_KEYS.views);
-        updateUI(subs, videos, views);
-      }
+        grid.appendChild(card);
+      });
+    } catch (error) {
+      console.error("Erro ao carregar o RSS:", error);
     }
-  })();
+  }
+
+  document.addEventListener("DOMContentLoaded", fetchLives);
 </script>
+
 
 
 
