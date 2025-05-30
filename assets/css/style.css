@@ -809,7 +809,7 @@ main {
 
 .news-card:hover {
   border: 2px solid rgba(190, 28, 57, 1);
-  box-shadow: 0 0 12px rgba(190, 28, 57,, 0.6), 0 0 24px rgba(190, 28, 57, 0.4);
+  box-shadow: 0 0 12px rgba(190, 28, 57, 0.6), 0 0 24px rgba(190, 28, 57, 0.4);
   transform: scale(1.03);
 }
 
@@ -3112,6 +3112,9 @@ footer {
 
 
 .ondemand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo na horizontal */
   padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -3124,6 +3127,7 @@ footer {
   margin-bottom: 1.5rem;
   font-weight: bold;
   text-shadow: 1px 1px 2px #000;
+  width: 100%; /* Garante que o título ocupe toda a largura disponível */
 }
 
 .ondemand-grid {
