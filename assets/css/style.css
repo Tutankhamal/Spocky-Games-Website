@@ -793,7 +793,7 @@ main {
   }
 
 .news-card {
-    background: rgba(255, 0, 0, 0.2); /* vermelho translúcido */
+    background: rgba(190, 28, 57, 0.7); /* vermelho translúcido */
     border-radius: 15px;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -803,7 +803,7 @@ main {
     width: 100%;
     max-width: 380px;
     transition: box-shadow 0.3s ease, border 0.3s ease;
-    border: 2px solid rgba(255, 0, 0, 0.2);
+    border: 2px solid rgba(190, 28, 58, 0.795);
     margin: 10px;
   }
 
@@ -902,14 +902,14 @@ main {
   }
 
   .read-more {
-    color: #ff5555;
+    color: #bd1b39;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
   }
 
   .read-more:hover {
-    color: #ff0000;
+    color: #bd1b39;
   }
 
   /* Layout responsivo */
