@@ -150,15 +150,15 @@
                     <div class="stats-section">
                       
 <div class="stat-item">
-  <div class="stat-number" id="subscriber-count">Carregando...</div>
+  <div class="stat-number" id="subscriber-count">5,8K+</div>
   <div class="stat-label">Inscritos</div>
 </div>
 <div class="stat-item">
-  <div class="stat-number" id="view-count">Carregando...</div>
+  <div class="stat-number" id="view-count">1,0M+</div>
   <div class="stat-label">Visualizações</div>
 </div>
 <div class="stat-item">
-  <div class="stat-number" id="video-count">Carregando...</div>
+  <div class="stat-number" id="video-count">1.2K+</div>
   <div class="stat-label">Vídeos</div>
 </div>
 <div class="stat-item">
@@ -305,42 +305,46 @@
 
 
 <script>
+  const apiKey = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
+  const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+
   async function fetchLives() {
-    const RSS_URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCSPC6X4M-tVPeK4IZMbK5aw";
-
     try {
-      const response = await fetch(https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)});
-      const data = await response.json();
+      // Primeiro, buscar os vídeos mais recentes do canal
+      const searchResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=20&order=date&type=video&key=${apiKey}`
+      );
+      const searchData = await searchResponse.json();
 
-      if (!data.items || !Array.isArray(data.items)) return;
+      if (!searchData.items || !Array.isArray(searchData.items)) return;
 
       const grid = document.getElementById("ondemand-grid");
 
-      const lives = data.items
-        .filter(item => !item.title.toLowerCase().includes("#shorts"))
+      // Filtrar os vídeos (excluir #shorts e limitar a 10 resultados)
+      const lives = searchData.items
+        .filter(item => !item.snippet.title.toLowerCase().includes("#shorts"))
         .slice(0, 10);
 
-      lives.forEach(live => {
-        const match = live.link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
-        const videoId = match ? match[1] : null;
-
-        if (!videoId) return;
+      // Criar os cards com os vídeos
+      lives.forEach(item => {
+        const videoId = item.id.videoId;
+        const title = item.snippet.title;
 
         const card = document.createElement("div");
         card.className = "ondemand-card";
 
-        card.innerHTML = 
+        card.innerHTML = `
           <lite-youtube 
             videoid="${videoId}" 
-            playlabel="${live.title.replace(/"/g, "'")}">
+            playlabel="${title.replace(/"/g, "'")}">
           </lite-youtube>
-          <div class="title">${live.title}</div>
-        ;
+          <div class="title">${title}</div>
+        `;
 
         grid.appendChild(card);
       });
     } catch (error) {
-      console.error("Erro ao carregar o RSS:", error);
+      console.error("Erro ao carregar vídeos do canal:", error);
     }
   }
 
