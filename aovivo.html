@@ -139,83 +139,66 @@
     
     <script src="/assets/js/script.js"></script>
 <script>
-  const apiKey = 'AIzaSyCwe_Y77Ah1DPGcd3QhAntk7ii8JhJi1oc';
   const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
   const domain = location.hostname;
+  const rssFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
 
-  async function fetchLiveOrLatestVideo() {
+  async function fetchLatestVideoViaRSS() {
     try {
-      // 1. Tenta buscar live ativa
-      const liveRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`);
-      const liveData = await liveRes.json();
-      const liveVideo = liveData.items?.[0];
+      const response = await fetch(rssFeedUrl);
+      const text = await response.text();
 
-      let chosenVideo = null;
-      let isLive = false;
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, "text/xml");
 
-      if (liveVideo) {
-        isLive = true;
-        chosenVideo = {
-          id: liveVideo.id.videoId,
-          title: liveVideo.snippet.title
-        };
-      } else {
-        // 2. Caso não tenha live, pega últimos vídeos (ignorando shorts)
-        const videoRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&type=video&key=${apiKey}`);
-        const videoData = await videoRes.json();
-        const video = videoData.items.find(item => !item.snippet.title.toLowerCase().includes('#shorts'));
+      // Busca todos os itens do feed
+      const items = Array.from(xml.querySelectorAll("entry"));
 
-        if (video) {
-          chosenVideo = {
-            id: video.id.videoId,
-            title: video.snippet.title
-          };
-        }
-      }
+      // Encontra o primeiro vídeo que não é um short (não contém #shorts no título)
+      const validVideo = items.find(item => {
+        const title = item.querySelector("title").textContent;
+        return !title.toLowerCase().includes("#shorts");
+      });
 
-      if (!chosenVideo) {
-        document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
+      if (!validVideo) {
+        document.getElementById("liveplayer-title").textContent = "Nenhum vídeo válido encontrado.";
         return;
       }
 
-      const { id: videoId, title } = chosenVideo;
+      const title = validVideo.querySelector("title").textContent;
+      const videoUrl = validVideo.querySelector("link").getAttribute("href");
+      const videoId = new URL(videoUrl).searchParams.get("v");
 
-      // Título
-      document.getElementById('liveplayer-title').textContent = title;
+      // Atualiza título
+      document.getElementById("liveplayer-title").textContent = title;
 
-      // Player
-      document.getElementById('liveplayer-video').innerHTML = `
+      // Atualiza o player com <lite-youtube>
+      document.getElementById("liveplayer-video").innerHTML = `
         <lite-youtube 
           videoid="${videoId}" 
           playlabel="${title.replace(/"/g, "'")}">
         </lite-youtube>
       `;
 
-      // Chat ao vivo
-      if (isLive) {
-        document.getElementById('liveplayer-chat').style.display = 'block';
-        document.getElementById('liveplayer-chat').innerHTML = `
-          <iframe 
-            src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${domain}" 
-            allowfullscreen>
-          </iframe>`;
-      }
+      // Oculta chat (não temos como saber se é live)
+      document.getElementById("liveplayer-chat").style.display = "none";
 
       // Botões
-      document.getElementById('liveplayer-buttons').innerHTML = `
+      document.getElementById("liveplayer-buttons").innerHTML = `
         <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Ver no YouTube</a>
         <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
       `;
-      document.getElementById('liveplayer-buttons').style.display = 'flex';
+      document.getElementById("liveplayer-buttons").style.display = "flex";
 
     } catch (err) {
-      console.error('Erro ao carregar player:', err);
-      document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
+      console.error("Erro ao carregar player via RSS:", err);
+      document.getElementById("liveplayer-title").textContent = "Erro ao carregar o vídeo.";
     }
   }
 
-  fetchLiveOrLatestVideo();
+  fetchLatestVideoViaRSS();
 </script>
+
 
 
     
