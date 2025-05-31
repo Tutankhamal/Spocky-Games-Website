@@ -440,7 +440,8 @@ function updatePacman() {
       pacman.target = null;
 if (fruit && pacman.x === fruit.x && pacman.y === fruit.y) {
   fruit = null;
-  rgbMode = true;
+  pacman.fruitCount = (pacman.fruitCount || 0) + 1;
+  if (pacman.fruitCount >= 3) rgbMode = true;
   setTimeout(placeFruit, 3000); // reaparece após 3 segundos
 }
     } else {
