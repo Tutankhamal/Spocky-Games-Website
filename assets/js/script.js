@@ -11,6 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastScrollTop = 0
 
   
+const backToTopButton = document.getElementById("backToTop");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 100) {
+    backToTopButton.classList.add("show");
+  } else {
+    backToTopButton.classList.remove("show");
+  }
+});
+
+backToTopButton.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
 
   // Event Listeners
   window.addEventListener("scroll", handleScroll)
