@@ -223,7 +223,7 @@
       {
         title: mostViewed.snippet.title,
         date: formatDate(mostViewed.snippet.publishedAt),
-        description: `Este é o vídeo mais assistido do canal, com mais de ${Number(mostViewed.statistics.viewCount).toLocaleString('pt-BR')} visualizações.`,
+        description: `Este é o vídeo mais assistido da semana, com mais de ${Number(mostViewed.statistics.viewCount).toLocaleString('pt-BR')} visualizações.`,
         url: `https://www.youtube.com/watch?v=${mostViewed.id}`,
         thumbnail: mostViewed.snippet.thumbnails.medium.url,
         tag: "Mais Visto"
@@ -231,7 +231,7 @@
       longestLive && {
         title: longestLive.snippet.title,
         date: formatDate(longestLive.snippet.publishedAt),
-        description: `Live mais longa com duração de ${secondsToHMS(getDurationSeconds(longestLive.liveStreamingDetails.actualStartTime, longestLive.liveStreamingDetails.actualEndTime))}.`,
+        description: `Live mais longa da semana, com duração de ${secondsToHMS(getDurationSeconds(longestLive.liveStreamingDetails.actualStartTime, longestLive.liveStreamingDetails.actualEndTime))}.`,
         url: `https://www.youtube.com/watch?v=${longestLive.id}`,
         thumbnail: longestLive.snippet.thumbnails.medium.url,
         tag: "Live Mais Longa"
@@ -239,7 +239,7 @@
       firstLive && {
         title: firstLive.snippet.title,
         date: formatDate(firstLive.snippet.publishedAt),
-        description: `Esta foi a primeira live registrada no canal.`,
+        description: `Esta foi a primeira live registrada da semana.`,
         url: `https://www.youtube.com/watch?v=${firstLive.id}`,
         thumbnail: firstLive.snippet.thumbnails.medium.url,
         tag: "Primeira Live"
