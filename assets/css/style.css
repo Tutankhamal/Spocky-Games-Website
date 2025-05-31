@@ -220,7 +220,7 @@ main {
   justify-content: center;
   text-align: center;
   padding: 0 5%;
-  background-image: url('/assets/images/bg-site.jpg');
+  background-image: url('/assets/images/bg-site.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -595,7 +595,7 @@ main {
   scroll-margin-top: var(--header-height); /* ⚠️ chave para snap */
   padding: 80px 5% 50px;
   text-align: center;
-  background-image: url('/assets/images/bg-site.jpg');
+  background-image: url('/assets/images/bg-site.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -2447,7 +2447,7 @@ footer {
 }
 
 .parceiros-carroussel {
-  background-image: url('/assets/images/bg-site.jpg');
+  background-image: url('/assets/images/bg-site.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
