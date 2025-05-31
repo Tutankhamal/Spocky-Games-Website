@@ -226,7 +226,7 @@
         description: `Este é o vídeo mais assistido da semana, com mais de ${Number(mostViewed.statistics.viewCount).toLocaleString('pt-BR')} visualizações.`,
         url: `https://www.youtube.com/watch?v=${mostViewed.id}`,
         thumbnail: mostViewed.snippet.thumbnails.medium.url,
-        tag: "Mais Visto"
+        tag: "Mais visto da semana"
       },
       longestLive && {
         title: longestLive.snippet.title,
@@ -234,7 +234,7 @@
         description: `Live mais longa da semana, com duração de ${secondsToHMS(getDurationSeconds(longestLive.liveStreamingDetails.actualStartTime, longestLive.liveStreamingDetails.actualEndTime))}.`,
         url: `https://www.youtube.com/watch?v=${longestLive.id}`,
         thumbnail: longestLive.snippet.thumbnails.medium.url,
-        tag: "Live Mais Longa"
+        tag: "Mais longo da semana"
       },
       firstLive && {
         title: firstLive.snippet.title,
@@ -242,7 +242,7 @@
         description: `Esta foi a primeira live registrada da semana.`,
         url: `https://www.youtube.com/watch?v=${firstLive.id}`,
         thumbnail: firstLive.snippet.thumbnails.medium.url,
-        tag: "Primeira Live"
+        tag: "Primeira live da semana"
       }
     ].filter(Boolean);
 
