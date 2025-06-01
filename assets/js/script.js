@@ -178,6 +178,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
+// new partners live tab 
+document.addEventListener("DOMContentLoaded", () => {
+  const shineTrack = document.querySelector(".shine-carousel-track");
+  const shineContainer = document.querySelector(".shine-carousel-container");
+  let shineSlides = Array.from(shineTrack.children);
+  const pauseTime = 2800;
+  const slideTime = 2000;
+  let shinePaused = false;
+  let shineTimeout;
+
+  function activateShine() {
+    shineSlides.forEach(s => s.classList.remove("active"));
+    shineSlides[0].classList.add("active");
+  }
+
+  function nextShine() {
+    if (shinePaused) return;
+    shineTrack.style.transition = `transform ${slideTime}ms ease-in-out`;
+    shineTrack.style.transform = `translateX(-100%)`;
+    shineTrack.addEventListener("transitionend", onShineTransitionEnd, { once: true });
+  }
+
+  function onShineTransitionEnd() {
+    shineTrack.style.transition = 'none';
+    shineTrack.style.transform = 'translateX(0)';
+    const first = shineSlides.shift();
+    shineTrack.appendChild(first);
+    shineSlides.push(first);
+    activateShine();
+    shineTimeout = setTimeout(nextShine, pauseTime);
+  }
+
+  shineSlides.forEach(slide => {
+    slide.querySelector("img").addEventListener("click", e => {
+      const link = e.currentTarget.dataset.link;
+      if (link) window.open(link, "_blank");
+    });
+  });
+
+  shineContainer.addEventListener("mouseenter", () => {
+    shinePaused = true;
+    clearTimeout(shineTimeout);
+    shineTrack.style.transition = '';
+  });
+
+  shineContainer.addEventListener("mouseleave", () => {
+    shinePaused = false;
+    setTimeout(nextShine, 300);
+  });
+
+  activateShine();
+  shineTimeout = setTimeout(nextShine, pauseTime);
+});
+
+
+
+
+
+
     
 // Background Pacman Dynamic.    
 const canvas = document.getElementById('retro-bg');

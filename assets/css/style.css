@@ -2464,18 +2464,7 @@ footer {
   align-items: center;
 }
 
-.parceiros-carroussel2 {
-  
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  padding: 10px 0px;
-  overflow: hidden;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .carousel-container {
   overflow: hidden;
   width: 100%;
@@ -2519,6 +2508,125 @@ footer {
     transform: scale(1.25);
   }
 }
+
+
+
+
+.shine-carousel-container {
+  overflow: hidden;
+  width: 100%;
+  max-width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding-top: 24px;
+}
+
+.shine-carousel-track {
+  display: flex;
+  transition: transform 2.5s ease-in-out;
+}
+
+.shine-carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.shine-carousel-slide img {
+  max-width: 75%;
+  max-height: 120px;
+  transition: transform 0.5s ease, filter 0.5s ease;
+  cursor: pointer;
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+/* Quando ativa no centro: brilha e amplia */
+.shine-carousel-slide.active img {
+  transform: scale(1.15);
+  filter: brightness(1.5) drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .shine-carousel-container {
+    max-width: 90%;
+  }
+
+  .shine-carousel-slide img {
+    max-height: 80px;
+  }
+}
+
+
+
+
+
+
+
+.parceiros-carroussel2 {
+  
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 10px 0px;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.carousel-container2 {
+  overflow: hidden;
+  width: 100%;
+  max-width: 20%; /* ocupa metade da página */
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-slide img {
+  max-width: 100%;
+  max-height: 200px;
+  transition: transform 0.6s ease-in-out;
+  cursor: pointer;
+}
+
+.carousel-slide.active img {
+  transform: scale(1.45);
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    max-width: 90%;
+  }
+
+  .carousel-slide img {
+    max-height: 140px;
+  }
+
+  .carousel-slide.active img {
+    transform: scale(1.25);
+  }
+}
+
+
+
 
 #latest-video-box {
   max-width: 100%;
@@ -3184,6 +3292,7 @@ footer {
   width: 100%;
   height: auto;
   max-width: 200px; /* Aumentado de 140px */
+  padding-bottom: 100px;
 }
 
 /* Animação pulsante */
