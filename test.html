@@ -139,6 +139,12 @@
     <div id="roulette" class="matrix-roulette"></div>
     <div id="resultText" class="matrix-result"></div>
   </div>
+  <div class="audio-controls">
+  <label for="volumeControl">Volume:</label>
+  <input type="range" id="volumeControl" min="0" max="100" value="50" />
+  <label for="customAudio">Áudio Personalizado:</label>
+  <input type="file" id="customAudio" accept="audio/*" />
+</div>
 
   <script>
     (() => {
@@ -146,6 +152,9 @@
       const namesInput = document.getElementById('namesInput');
       const roulette = document.getElementById('roulette');
       const resultText = document.getElementById('resultText');
+      const volumeControl = document.getElementById('volumeControl');
+      const customAudio = document.getElementById('customAudio');
+
 
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
       let names = [];

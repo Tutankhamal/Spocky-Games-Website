@@ -77,13 +77,27 @@
         <section class="game-section">
             
 
-  <h2 class="section-title">Roleta Spocky Games</h2>
-  <div class="matrix-container">
+<h2 class="section-title">🎰 Roleta Spocky Games 🎰</h2>
+<div class="matrix-container">
+  <div class="matrix-left">
     <textarea id="namesInput" class="matrix-textarea" placeholder="Digite um nome por linha..."></textarea>
-    <button id="startBtn" class="matrix-button">Iniciar o Sorteio</button>
+    
+    <div class="volume-wrapper">
+      <label for="volumeControl">🔊 Volume</label>
+      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+    </div>
+
+    <button id="startBtn" class="matrix-button">🎲 Iniciar o Sorteio</button>
+  </div>
+
+  <div class="matrix-right">
+    <div id="rouletteWrapper">
     <div id="roulette" class="matrix-roulette"></div>
+    </div>
     <div id="resultText" class="matrix-result"></div>
   </div>
+</div>
+
          
 
 
@@ -135,6 +149,12 @@
   const startBtn = document.getElementById('startBtn');
   const namesInput = document.getElementById('namesInput');
   const roulette = document.getElementById('roulette');
+roulette.style.display = 'inline-block';
+roulette.style.width = '100%'; // ou '400px' se quiser fixo
+roulette.style.maxWidth = '100%';
+roulette.style.overflow = 'hidden';
+roulette.style.textOverflow = 'clip'; // ou 'ellipsis'
+roulette.style.whiteSpace = 'nowrap';
   const resultText = document.getElementById('resultText');
 
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
@@ -145,6 +165,8 @@
 
   const roletaAudio = new Audio('/assets/audio/roleta.mp3');
   const zeldaAudio = new Audio('/assets/audio/zelda.mp3');
+  roletaAudio.volume = 0.5;
+  zeldaAudio.volume = 0.5;
 
   function randomString(length) {
     let str = '';
@@ -292,9 +314,7 @@
       }
       explosionCount++;
     } else {
-      // FADE-OUT suave
       fireworksCanvas.style.opacity = '0';
-
       setTimeout(() => {
         cancelAnimationFrame(fireworksAnimationId);
         fireworksAnimationId = null;
@@ -306,21 +326,16 @@
           ctx = null;
         }
       }, 1500);
-
       return;
     }
 
     ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
-
     fireworks.forEach(fw => {
       fw.update();
       fw.draw(ctx);
     });
-
     fireworks = fireworks.filter(fw => fw.isAlive);
-
     drawWinnerNameWaveEffect(currentWinnerName, timestamp);
-
     fireworksAnimationId = requestAnimationFrame(animateFireworks);
   }
 
@@ -398,8 +413,20 @@
       startFireworks();
     });
   });
+
+  // ===== CONTROLE DE VOLUME =========
+  const volumeControl = document.getElementById('volumeControl');
+  if (volumeControl) {
+    volumeControl.addEventListener('input', () => {
+      const volume = parseFloat(volumeControl.value);
+      roletaAudio.volume = volume;
+      zeldaAudio.volume = volume;
+    });
+  }
+
 })();
 </script>
+
 
     
 </body>
