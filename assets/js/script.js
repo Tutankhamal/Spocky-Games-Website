@@ -126,14 +126,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".carousel-track");
   const container = document.querySelector(".carousel-container");
   let slides = Array.from(track.children);
-  const pauseTime = 2000;     // pausa após chegar ao centro
-  const slideTime = 3000;     // tempo de transição
+  const pauseTime = 2000;
+  const slideTime = 3000;
   let paused = false;
   let timeout;
 
+  function animateBrightness(img, from, to, duration = 1500) {
+    const startTime = performance.now();
+
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const brightness = from + (to - from) * progress;
+      img.style.filter = `brightness(${brightness.toFixed(2)})`;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
   function activateZoom() {
-    slides.forEach(s => s.classList.remove("active"));
-    slides[0].classList.add("active");
+    slides.forEach(s => {
+      const img = s.querySelector("img");
+      s.classList.remove("active");
+      img.style.transform = "scale(1)";
+      img.style.filter = "brightness(1)";
+    });
+
+    const activeSlide = slides[0];
+    const activeImg = activeSlide.querySelector("img");
+    activeSlide.classList.add("active");
+    activeImg.style.transform = "scale(1.45)";
+    animateBrightness(activeImg, 1, 1.5, 1500);
   }
 
   function next() {
@@ -174,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
   activateZoom();
   timeout = setTimeout(next, pauseTime);
 });
-  
+
 
 
 

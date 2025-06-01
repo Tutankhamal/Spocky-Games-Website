@@ -1008,7 +1008,7 @@ main {
   background-color: var(--card-bg-color);
   border-radius: 10px;
   padding: 30px;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
 }
@@ -1026,19 +1026,21 @@ main {
   margin: 0 auto 20px;
   overflow: hidden;
   border-radius: 10px;
-  border: 3px solid var(--primary-color);
+  border: 0px solid var(--primary-color);
   transition: all 0.3s ease;
 }
 
 .partner-card:hover .partner-logo {
   transform: scale(1.05);
-  box-shadow: var(--glow-shadow);
+  
+    filter: brightness(1.5); /* brilho aumentado ao passar o mouse */
 }
 
 .partner-logo img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Use 'contain' se quiser ver tudo da imagem mesmo com bordas */
+  filter: brightness(1); /* valor base */
 }
 
 .partner-card h3 {
@@ -1392,7 +1394,7 @@ main {
   background-color: #1eb0bd56;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(4px) !important;
 
@@ -1419,62 +1421,7 @@ main {
   }
 }
 
-/* Hover Effects */
-.team-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--cyan-glow);
-  border-color: var(--secondary-color);
-}
 
-/* Avatar */
-.team-avatar {
-  width: 200px;
-  height: 200px;
-  margin: 30px auto;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid var(--secondary-color);
-  transition: all 0.3s ease;
-}
-
-.team-card:hover .team-avatar {
-  transform: scale(1.05);
-  box-shadow: var(--cyan-glow);
-}
-
-.team-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Text content */
-.team-info {
-  padding: 0 20px 30px;
-}
-
-.team-info h3 {
-  font-size: 1.5rem;
-  margin-bottom: 5px;
-}
-
-.team-role {
-  color: var(--secondary-color);
-  font-size: 0.9rem;
-  margin-bottom: 15px;
-}
-
-.team-description {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-}
-
-.team-social {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
 
 
 /* Hover Effects */
@@ -1489,14 +1436,15 @@ main {
   width: 200px;
   height: 200px;
   margin: 30px auto;
-  border-radius: 50%;
+  border-radius: 15px;
   overflow: hidden;
-  border: 3px solid var(--secondary-color);
+  border: 2px solid #00e1ff46;
   transition: all 0.3s ease;
 }
 
 .team-card:hover .team-avatar {
   transform: scale(1.05);
+  border: 2px solid #00e1ffb6;
   box-shadow: var(--cyan-glow);
 }
 
@@ -2464,11 +2412,10 @@ footer {
   align-items: center;
 }
 
-
 .carousel-container {
   overflow: hidden;
   width: 100%;
-  max-width: 50%; /* ocupa metade da página */
+  max-width: 50%;
   position: relative;
 }
 
@@ -2487,12 +2434,10 @@ footer {
 .carousel-slide img {
   max-width: 100%;
   max-height: 200px;
-  transition: transform 0.6s ease-in-out;
   cursor: pointer;
-}
-
-.carousel-slide.active img {
-  transform: scale(1.45);
+  transition: transform 1.5s ease-in-out;
+  transform: scale(1);
+  filter: brightness(1);
 }
 
 @media (max-width: 768px) {
@@ -2503,11 +2448,9 @@ footer {
   .carousel-slide img {
     max-height: 140px;
   }
-
-  .carousel-slide.active img {
-    transform: scale(1.25);
-  }
 }
+
+
 
 
 
@@ -2521,6 +2464,7 @@ footer {
   justify-content: center;
   position: relative;
   padding-top: 24px;
+  margin-bottom: 24px;
 }
 
 .shine-carousel-track {
@@ -3380,6 +3324,7 @@ footer {
   text-shadow: 1px 1px 1px #000;
 }
 
+/* SEÇÃO PRINCIPAL */
 .indexvideo-section {
   padding: 2rem;
   background-color: transparent;
@@ -3391,6 +3336,7 @@ footer {
   align-items: center;
 }
 
+/* TÍTULO */
 .indexvideo-title-wrapper {
   width: 100%;
   text-align: center;
@@ -3403,15 +3349,19 @@ footer {
   text-align: center;
 }
 
+/* CONTAINER FLEXÍVEL */
 .indexvideo-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
   justify-content: center;
   align-items: center;
   text-align: center;
+  max-width: 1200px;
+  width: 100%;
 }
 
+/* ITEM (CARD) */
 .indexvideo-item {
   background: rgba(190, 28, 58, 0.541);
   border: 1px solid #be1c39;
@@ -3419,8 +3369,8 @@ footer {
   overflow: hidden;
   box-shadow: 0 0 4px #be1c3960;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 400px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
 }
 
@@ -3428,6 +3378,7 @@ footer {
   transform: scale(1.05);
 }
 
+/* VIDEO DENTRO DO CARD */
 .indexvideo-item iframe,
 .indexvideo-item lite-youtube {
   width: 100%;
@@ -3437,6 +3388,7 @@ footer {
   background-color: #000000;
 }
 
+/* TEXTO */
 .indexvideo-title-text {
   padding: 0.75rem;
   font-size: 0.9rem;
@@ -3444,10 +3396,10 @@ footer {
   color: #fff;
 }
 
-/* Responsividade para telas menores */
+/* AJUSTE PARA TELAS MENORES */
 @media (max-width: 768px) {
   .indexvideo-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .indexvideo-item {
@@ -3459,8 +3411,6 @@ footer {
     height: 180px;
   }
 }
-
-
 
 
 .matrix-container {
