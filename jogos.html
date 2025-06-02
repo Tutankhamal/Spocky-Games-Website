@@ -82,11 +82,17 @@
   <div class="matrix-left">
     <textarea id="namesInput" class="matrix-textarea" placeholder="Digite um nome por linha..."></textarea>
     
-    <div class="volume-wrapper">
-      <label for="volumeControl">🔊 Volume</label>
-      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
-    </div>
+<div class="volume-wrapper">
+  🔊 Volume:
+  <input type="range" id="volumeControl" min="0" max="100" value="75">
+  <span id="volumeValue" class="slider-label">75%</span>
+</div>
 
+<div class="duration-wrapper">
+  ⏱️ Duração:
+  <input type="range" id="durationControl" min="5" max="180" value="30">
+  <span id="durationValue" class="slider-label">30s</span>
+</div>
     <button id="startBtn" class="matrix-button">🎲 Iniciar o Sorteio</button>
   </div>
 
@@ -149,12 +155,12 @@
   const startBtn = document.getElementById('startBtn');
   const namesInput = document.getElementById('namesInput');
   const roulette = document.getElementById('roulette');
-roulette.style.display = 'inline-block';
-roulette.style.width = '100%'; // ou '400px' se quiser fixo
-roulette.style.maxWidth = '100%';
-roulette.style.overflow = 'hidden';
-roulette.style.textOverflow = 'clip'; // ou 'ellipsis'
-roulette.style.whiteSpace = 'nowrap';
+  roulette.style.display = 'inline-block';
+  roulette.style.width = '100%'; // ou '400px' se quiser fixo
+  roulette.style.maxWidth = '100%';
+  roulette.style.overflow = 'hidden';
+  roulette.style.textOverflow = 'clip'; // ou 'ellipsis'
+  roulette.style.whiteSpace = 'nowrap';
   const resultText = document.getElementById('resultText');
 
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
@@ -187,7 +193,8 @@ roulette.style.whiteSpace = 'nowrap';
   }
 
   function animateMatrixSuspense(finalName, onComplete) {
-    const duration = 25000;
+    const durationInput = document.getElementById('durationControl');
+    const duration = (durationInput ? parseInt(durationInput.value) : 25) * 1000;
     animationStart = null;
     const maxLength = Math.max(30, finalName.length + 10);
 
@@ -414,18 +421,34 @@ roulette.style.whiteSpace = 'nowrap';
     });
   });
 
-  // ===== CONTROLE DE VOLUME =========
+  // ===== CONTROLE DE VOLUME E DURAÇÃO COM LABELS =====
   const volumeControl = document.getElementById('volumeControl');
-  if (volumeControl) {
-    volumeControl.addEventListener('input', () => {
-      const volume = parseFloat(volumeControl.value);
+  const volumeValue = document.getElementById('volumeValue');
+  if (volumeControl && volumeValue) {
+    function updateVolume() {
+      const volumePercent = parseFloat(volumeControl.value);
+      const volume = volumePercent / 100;
       roletaAudio.volume = volume;
       zeldaAudio.volume = volume;
-    });
+      volumeValue.textContent = `${volumePercent}%`;
+    }
+    volumeControl.addEventListener('input', updateVolume);
+    updateVolume(); // inicializa na carga
   }
 
+  const durationControl = document.getElementById('durationControl');
+  const durationValue = document.getElementById('durationValue');
+  if (durationControl && durationValue) {
+    function updateDuration() {
+      const dur = durationControl.value;
+      durationValue.textContent = `${dur}s`;
+    }
+    durationControl.addEventListener('input', updateDuration);
+    updateDuration(); // inicializa na carga
+  }
 })();
 </script>
+
 
 
     

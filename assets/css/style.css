@@ -3603,6 +3603,47 @@ footer {
   border: none;
 }
 
+.volume-wrapper,
+.duration-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+#volumeControl,
+#durationControl {
+  flex: 1;
+  appearance: none;
+  height: 6px;
+  background: #444;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s;
+}
+
+#volumeControl::-webkit-slider-thumb,
+#durationControl::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #bd1b39;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-label {
+  background: #222;
+  border: 1px solid #bd1b39;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+
 .top-button {
   position: fixed;
   bottom: 90px; /* Eleva o botão acima da footer */
