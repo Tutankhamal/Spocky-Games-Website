@@ -26,7 +26,7 @@
     <meta name="twitter:description" content="Spocky Games - O melhor canal de jogos do Brasil!">
     <meta name="twitter:image" content="https://imgur.com/JuOYAFI.gif">
 
-    <title>Spocky Games | Jogos</title>
+    <title>Spocky Games | Extras</title>
 
     <!-- Fonts and Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,7 +51,7 @@
                 <li><a href="loja.html">Loja</a></li>
                 <li><a href="aovivo.html" >Ao Vivo</a></li>
                 <li><a href="ondemand.html">On Demand</a></li>
-                <li><a href="jogos.html" class="active">Jogos</a></li>
+                <li><a href="extras.html" class="active">Extras</a></li>
                 <li><a href="novidades.html">Novidades</a></li>
                 <li><a href="parceiros.html">Parceiros</a></li>
                 <!--<li><a href="sobre.html">Sobre</a></li> -->
@@ -69,8 +69,8 @@
     <main>
         <section class="page-header animated-section">
             <div class="animated-content">
-            <h1 class="glitch" data-text="Jogos">Jogos</h1>
-            <p>Curta e divirta-se com nossos jogos! (Em breve)</p>
+            <h1 class="glitch" data-text="Extras">Extras</h1>
+            <p>Curta e divirta-se com nossos jogos e aplicativos! (Em breve)</p>
             </div>
         </section>
         
@@ -407,14 +407,43 @@
     const chosenName = names[Math.floor(Math.random() * names.length)];
     currentWinnerName = chosenName.toUpperCase();
 
-    roletaAudio.currentTime = 0;
-    roletaAudio.play();
+roletaAudio.currentTime = 0;
+roletaAudio.loop = true;
+roletaAudio.volume = parseFloat(volumeControl.value) / 100;
+roletaAudio.play();
+
+// Duração do sorteio em milissegundos
+const durationInput = document.getElementById('durationControl');
+const duration = (durationInput ? parseInt(durationInput.value) : 25) * 1000;
+
+// Agendar o fade-out antes do final
+setTimeout(() => {
+  let fadeStartVolume = roletaAudio.volume;
+  let fadeDuration = 1500; // ms
+  let fadeSteps = 30;
+  let step = 0;
+
+  const fadeInterval = setInterval(() => {
+    step++;
+    const progress = step / fadeSteps;
+    // Atenuação exponencial
+    roletaAudio.volume = fadeStartVolume * Math.pow(0.1, progress);
+    if (step >= fadeSteps) {
+      clearInterval(fadeInterval);
+      roletaAudio.pause();
+      roletaAudio.currentTime = 0;
+      roletaAudio.volume = fadeStartVolume; // Restaura para próxima execução
+      roletaAudio.loop = false;
+    }
+  }, fadeDuration / fadeSteps);
+}, duration - 1500); // Inicia fade 1.5s antes do fim
+
 
     animateMatrixSuspense(chosenName, () => {
       zeldaAudio.currentTime = 0;
       zeldaAudio.play();
 
-      resultText.textContent = `Sorteado: ${chosenName}`;
+      resultText.textContent = `${chosenName}`;
       resultText.style.animation = 'bounce 1.2s ease infinite';
 
       startFireworks();

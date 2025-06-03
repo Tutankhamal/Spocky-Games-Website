@@ -3417,7 +3417,7 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: linear-gradient(to bottom right, #1a1a1a, #2c001f);
+  background: linear-gradient(to bottom right, #1a1a1ab6, #2c001fc0);
   border-radius: 15px;
   padding: 30px;
   width: 100%;
