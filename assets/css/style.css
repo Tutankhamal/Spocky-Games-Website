@@ -377,6 +377,9 @@ main {
 }
 
 .cta-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 12px 30px;
   background-color: #000000d3;
   border: 2px solid var(--primary-color);
@@ -387,6 +390,25 @@ main {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .cta-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cta-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 14px 0;
+  }
+}
+
+a.cta-button {
+  text-decoration: none;
+  text-align: center;
+  margin: 5px;
 }
 
 .cta-button::before {
