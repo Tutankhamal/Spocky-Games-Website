@@ -101,6 +101,43 @@ backToTopButton.addEventListener("click", () => {
     })
   }
 
+  const heroMainContent = document.getElementById("heroMainContent");
+  const heroAdContent = document.getElementById("heroAdContent");
+  const heroSlider = document.getElementById("heroSlider");
+  
+  // Efeito de entrada
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      heroMainContent.classList.add("mosaic-in");
+    }, 100);
+  });
+  
+  let showingMain = true;
+  function toggleHeroContent() {
+    if (heroMainContent && heroAdContent && heroSlider) {
+      heroSlider.classList.add("slide-left");
+      setTimeout(() => {
+        if (showingMain) {
+          heroMainContent.style.display = "none";
+          heroAdContent.style.display = "flex";
+          heroAdContent.classList.add("mosaic-in");
+          heroMainContent.classList.remove("mosaic-in");
+        } else {
+          heroAdContent.style.display = "none";
+          heroMainContent.style.display = "flex";
+          heroMainContent.classList.add("mosaic-in");
+          heroAdContent.classList.remove("mosaic-in");
+        }
+        heroSlider.classList.remove("slide-left");
+        showingMain = !showingMain;
+      }, 900); // tempo igual ao transition da .hero-slider
+    }
+  }
+  
+  setInterval(toggleHeroContent, 10000);
+
+  
+
   // Video Card Hover Effects
   const videoCards = document.querySelectorAll(".video-card")
   videoCards.forEach((card) => {

@@ -213,18 +213,38 @@ main {
 }
 
 /* Hero Section */
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/images/bg-site.webp') center center/cover no-repeat;
+  z-index: 0;
+  filter: brightness(0.8);
+}
 .hero {
-  height: calc(100vh - var(--header-height));
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0 5%;
-  background-image: url('/assets/images/bg-site.webp');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  min-height: 70vh;
 }
+
+.hero-wrapper {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .hero-content {
   max-width: 800px;
 }
@@ -389,6 +409,137 @@ main {
 .cta-button:hover::before {
   left: 100%;
 }
+
+.hero-slider {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hero-slide {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.hero-slide.active,
+.hero-main-content:not([style*="display: none"]),
+.hero-ad-content:not([style*="display: none"]) {
+  display: flex;
+}
+@media (max-width: 700px) {
+  .hero {
+    max-width: 98vw;
+    min-height: 60vh;
+  }
+  .hero-background {
+    background-position: center top;
+  }
+}
+
+.hero-ad-content {
+  background: transparent;
+  color: var(--text-color);
+  text-align: center;
+}
+.hero-slider.slide-left {
+  transform: translateX(-50%);
+}
+.advertisers-banners {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+.advertiser-banner {
+  width: 180px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px var(--secondary-color));
+  transition: transform 0.3s;
+}
+.advertiser-banner:hover {
+  transform: scale(1.08) rotate(-2deg);
+  filter: drop-shadow(0 0 20px var(--primary-color));
+}
+.advertise-btn {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  box-shadow: var(--glow-shadow);
+  transition: background 0.3s;
+}
+.advertise-btn:hover {
+  background: var(--accent-color);
+  color: #000;
+}
+
+.hero-animate {
+  opacity: 0;
+  transform: translateY(-80px) scale(0.98);
+  animation: heroEntrance 1.1s cubic-bezier(0.77,0,0.175,1) 0.1s forwards;
+}
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.98);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(10px) scale(1.03);
+  }
+  85% {
+    transform: translateY(-5px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Efeito mosaico (opcional, para "montar" o conteúdo) */
+.mosaic-in {
+  animation: mosaicIn 1.2s cubic-bezier(0.77,0,0.175,1) 0.1s forwards;
+}
+@keyframes mosaicIn {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(0.8) translateY(60px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(2px);
+    transform: scale(1.04) translateY(-8px);
+  }
+  80% {
+    filter: blur(0.5px);
+    transform: scale(0.98) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Transição de rolagem para o conteúdo do anunciante */
+.hero-slider {
+  transition: transform 0.9s cubic-bezier(0.77,0,0.175,1);
+}
+.hero-slider.slide-left {
+  transform: translateX(-100vw);
+}
+@media (max-width: 700px) {
+  .hero-slider.slide-left {
+    transform: translateX(-100vw);
+  }
+}
+
 
 /* Section Styles */
 .section-title {

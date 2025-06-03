@@ -34,3 +34,10 @@
 
 
 Ajustar a ppacidade do background para deixar mais sutil, otimizar o desempenho do background passando para um web worker.
+
+
+!important
+
+Hero com banners rotativos, com transição para outros banners de anunciantes.
+
+Pagina Ao vivo com um novo estio de banners e uma animaão envovendo uma TV dizendo Anuncie aqui.
