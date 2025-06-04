@@ -77,42 +77,24 @@
             </div>
         </section>
         
-<section class="shine-banner-carousel">
-  <div class="shine-carousel-container">
-    <div class="shine-carousel-track">
-      <div class="shine-carousel-slide">
-        <img src="/assets/images/partnerlogos/ecast.webp" alt="E-Cast" data-link="https://www.ecast.site">
-      </div>
-      <div class="shine-carousel-slide">
-        <img src="/assets/images/partnerlogos/entretonic.webp" alt="Entretonic" data-link="https://instagram.com/entretonic">
-      </div>
-      <div class="shine-carousel-slide">
-        <img src="/assets/images/partnerlogos/sejaumpatrocinador.webp" alt="Patrocine" data-link="contato.html">
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<section class="responsive-player-wrapper">
-  <!-- Logo Esquerda -->
-  <a class="side-logo-wrapper left-logo pulse-logo" href="https://ecast.site" target="_blank" rel="noopener">
-    <img src="/assets/images/partnerlogos/ecast.webp" alt="Logo E-Cast" class="side-logo" />
-  </a>
-
-  <!-- Player Central -->
-  <div class="responsive-video-box" id="liveplayer-box">
-    <div class="liveplayer-video-wrapper" id="liveplayer-video"></div>
-    <div class="responsive-video-title" id="liveplayer-title">Carregando transmissão retrô...</div>
-    <div class="responsive-video-buttons" id="liveplayer-buttons" style="display: none;"></div>
-  </div>
-
-  <!-- Logo Direita -->
-  <a class="side-logo-wrapper right-logo pulse-logo" href="https://instagram.com/entretonic" target="_blank" rel="noopener">
-    <img src="/assets/images/partnerlogos/entretonic.webp" alt="Logo Entretonic" class="side-logo" />
-  </a>
-</section>
+        <section class="live-highlight-section">
+          <div class="custom-retro-banner-wrapper">
+            <div class="custom-retro-banner-bg"></div>
+            <div class="custom-retro-character" id="retroBannerCharacter">
+              <img src="/assets/images/mummy.gif" alt="Mummy" />
+            </div>
+            <div class="custom-retro-content" id="retroBannerContent">
+              <span>Anuncie aqui</span>
+            </div>
+          </div>
+          <div class="big-live-player-box">
+            <div class="big-live-player-title" id="liveplayer-title">Carregando transmissão retrô...</div>
+            <div class="big-live-player-video" id="liveplayer-video"></div>
+            
+            <div class="big-live-player-buttons" id="liveplayer-buttons" style="display: none;"></div>
+            <div class="big-live-player-chat" id="liveplayer-chat"></div>
+          </div>
+        </section>
 
 
 <!--<section class="liveplayer-container ">
@@ -139,9 +121,9 @@
         <div class="carousel-slide">
           <img src="/assets/images/partnerlogos/ecast.webp" alt="E-Cast" data-link="https://www.ecast.site">
         </div>
-        <div class="carousel-slide">
+       <!-- <div class="carousel-slide">
           <img src="/assets/images/partnerlogos/entretonic.webp" alt="Entretonic" data-link="https://instagram.com/entretonic">
-        </div>
+        </div> -->
       <div class="carousel-slide">
         <img src="/assets/images/partnerlogos/sejaumpatrocinador.webp" alt="Entretonic" data-link="contato.html">
       </div>
@@ -174,62 +156,265 @@
     </footer>
     
     <script src="/assets/js/script.js"></script>
-<script>
-  const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
-  const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-  const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
-
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(data => {
-      const items = data.items.filter(item => !item.title.toLowerCase().includes('#shorts'));
-
-      if (!items.length) {
-        document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
-        return;
-      }
-
-      const liveVideo = items.find(item => item.thumbnail && item.thumbnail.includes('hqdefault_live.jpg'));
-      const chosenVideo = liveVideo || items[0];
-      const videoId = chosenVideo.link.split('v=')[1];
-      const title = chosenVideo.title;
-      const isLive = !!liveVideo;
+    <script>
+      const channelId = 'UCSPC6X4M-tVPeK4IZMbK5aw';
+      const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl);
       const domain = location.hostname;
+    
+      function loadLivePlayer() {
+        fetch(apiUrl)
+          .then(res => res.json())
+          .then(data => {
+            const items = data.items.filter(item => !item.title.toLowerCase().includes('#shorts'));
+            if (!items.length) {
+              document.getElementById('liveplayer-title').textContent = 'Nenhum vídeo válido encontrado.';
+              document.getElementById('liveplayer-video').innerHTML = '';
+              document.getElementById('liveplayer-chat').innerHTML = '';
+              document.getElementById('liveplayer-buttons').style.display = 'none';
+              return;
+            }
+            const liveVideo = items.find(item => item.thumbnail && item.thumbnail.includes('hqdefault_live.jpg'));
+            const chosenVideo = liveVideo || items[0];
+            const videoIdMatch = chosenVideo.link.match(/v=([\w-]+)/);
+            const videoId = videoIdMatch ? videoIdMatch[1] : '';
+            const title = chosenVideo.title;
+            const isLive = !!liveVideo;
+    
+            document.getElementById('liveplayer-title').textContent = title;
+            document.getElementById('liveplayer-video').innerHTML = `
+              <lite-youtube 
+                videoid="${videoId}" 
+                playlabel="${title.replace(/"/g, "'")}">
+              </lite-youtube>
+            `;
+            document.getElementById('liveplayer-buttons').innerHTML = `
+              <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Ver no YouTube</a>
+              <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
+            `;
+            document.getElementById('liveplayer-buttons').style.display = 'flex';
+            // Corrige o chat: só exibe se for live e se o domínio for válido
+            if (isLive && domain !== "") {
+              document.getElementById('liveplayer-chat').style.display = 'block';
+              document.getElementById('liveplayer-chat').innerHTML = `
+                <iframe 
+                  src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${domain}" 
+                  allowfullscreen style="width:100%;height:400px;border:none;"></iframe>`;
+            } else {
+              document.getElementById('liveplayer-chat').style.display = 'none';
+              document.getElementById('liveplayer-chat').innerHTML = '';
+            }
+          })
+          .catch(err => {
+            console.error('Erro ao carregar player:', err);
+            document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
+            document.getElementById('liveplayer-video').innerHTML = '';
+            document.getElementById('liveplayer-chat').innerHTML = '';
+            document.getElementById('liveplayer-buttons').style.display = 'none';
+          });
+      }
+      document.addEventListener('DOMContentLoaded', loadLivePlayer);
+    </script>
 
-      document.getElementById('liveplayer-title').textContent = title;
+<script>
+  const retroBanners = [
+    { type: 'text', text: 'Anuncie aqui', link: 'contato.html' },
+    { type: 'logo', img: '/assets/images/partnerlogos/ecast.webp', alt: 'Ecast', link: 'https://ecast.site' }
+  ];
+  const retroCharacters = [
+    { name: 'Mummy', src: '/assets/images/mummy.gif', width: 72, height: 72 },
+    { name: 'Sonic', src: '/assets/images/sonic.gif', width: 72, height: 72 },
+    { name: 'DK', src: '/assets/images/dk.gif', width: 72, height: 72 },
+    { name: 'Mario', src: '/assets/images/mario.gif', width: 72, height: 72 },
+    { name: 'Wario', src: '/assets/images/wario.gif', width: 72, height: 72 },
+    { name: 'Luigi', src: '/assets/images/luigi.gif', width: 72, height: 72 },
+    { name: 'Mickey', src: '/assets/images/mickey.gif', width: 72, height: 72 }
 
-      // Player otimizado com lite-youtube-embed
-      document.getElementById('liveplayer-video').innerHTML = `
-        <lite-youtube 
-          videoid="${videoId}" 
-          playlabel="${title.replace(/"/g, "'")}">
-        </lite-youtube>
-      `;
+  ];
 
-      // Exibe chat se live estiver ao vivo
-      if (isLive) {
-        document.getElementById('liveplayer-chat').style.display = 'block';
-        document.getElementById('liveplayer-chat').innerHTML = `
-          <iframe 
-            src="https://www.youtube.com/live_chat?v=${videoId}&embed_domain=${domain}" 
-            allowfullscreen>
-          </iframe>`;
+  const bannerEl = document.querySelector('.custom-retro-banner-wrapper');
+  const contentEl = document.getElementById('retroBannerContent');
+  const charEl = document.getElementById('retroBannerCharacter');
+
+  let currentBanner = -1;
+  let currentChar = -1;
+  let state = 'enter';
+  let animStart = null;
+
+  let bannerWidth, charWidth, contentWidth, gap;
+  let centerPos, leftEdge, rightEdge;
+
+  const animDuration = 3400;
+  const waitDuration = 10000;
+  const charGap = 12;
+
+  function setBanner(bannerIdx, charIdx) {
+    const banner = retroBanners[bannerIdx];
+    const character = retroCharacters[charIdx];
+
+    if (banner.type === 'text') {
+      contentEl.innerHTML = `<a href="${banner.link}" style="color:inherit;text-decoration:none;white-space:nowrap;position:relative;left:85px;">${banner.text}</a>`;
+    } else if (banner.type === 'logo') {
+      contentEl.innerHTML = `<a href="${banner.link}" style="left:65px" target="_blank"><img src="${banner.img}" alt="${banner.alt}" class="rbann-logo"></a>`;
+    }
+
+    charEl.innerHTML = `<img src="${character.src}" alt="${character.name}" style="width:${character.width}px; height:${character.height}px;">`;
+
+    setTimeout(() => {
+      bannerWidth = bannerEl.offsetWidth;
+      charWidth = charEl.offsetWidth || character.width;
+      const contentRect = contentEl.getBoundingClientRect();
+      contentWidth = contentRect.width;
+
+      gap = charGap;
+
+      const totalContentWidth = contentWidth + charWidth + gap;
+      const startX = (bannerWidth - totalContentWidth) / 2;
+
+      leftEdge = -totalContentWidth;
+      centerPos = startX + charWidth + gap;
+      rightEdge = bannerWidth + totalContentWidth;
+
+      charEl.style.transition = 'none';
+      contentEl.style.transition = 'none';
+
+      charEl.style.left = leftEdge + 'px';
+      charEl.style.transform = 'scaleX(1)';
+      contentEl.style.left = (leftEdge + charWidth + gap) + 'px';
+
+      state = 'enter';
+      animStart = null;
+      requestAnimationFrame(animate);
+    }, 30);
+  }
+
+  function animate(ts) {
+    if (!animStart) animStart = ts;
+    let elapsed = ts - animStart;
+
+    if (state === 'enter') {
+      const duration = animDuration;
+      let progress = Math.min(elapsed / duration, 1);
+
+      const charStart = leftEdge;
+      const contentStart = leftEdge + charWidth + gap;
+      const charEnd = centerPos - charWidth - gap;
+      const contentEnd = centerPos;
+
+      const charPos = charStart + (charEnd - charStart) * progress;
+      const contentPos = contentStart + (contentEnd - contentStart) * progress;
+
+      charEl.style.left = charPos + 'px';
+      contentEl.style.left = contentPos + 'px';
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        charEl.style.left = charEnd + 'px';
+        contentEl.style.left = contentEnd + 'px';
+        charEl.style.transform = 'scaleX(-1)';
+
+        state = 'returnLeft';
+        animStart = null;
+        requestAnimationFrame(animate);
       }
 
-      // Botões
-      document.getElementById('liveplayer-buttons').innerHTML = `
-        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Ver no YouTube</a>
-        <a href="https://www.youtube.com/channel/${channelId}/join" target="_blank">Seja Membro</a>
-      `;
-      document.getElementById('liveplayer-buttons').style.display = 'flex';
-    })
-    .catch(err => {
-      console.error('Erro ao carregar player:', err);
-      document.getElementById('liveplayer-title').textContent = 'Erro ao carregar a transmissão.';
-    });
+    } else if (state === 'returnLeft') {
+      const duration = animDuration * 0.6;
+      let progress = Math.min(elapsed / duration, 1);
+
+      const charStart = centerPos - charWidth - gap;
+      const charEnd = leftEdge;
+
+      const charPos = charStart + (charEnd - charStart) * progress;
+
+      charEl.style.left = charPos + 'px';
+      contentEl.style.left = centerPos + 'px';
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        charEl.style.left = leftEdge + 'px';
+        charEl.style.transform = 'scaleX(1)';
+
+        state = 'waitBeforeExit';
+        animStart = null;
+
+        setTimeout(() => {
+          state = 'exit';
+          animStart = null;
+          requestAnimationFrame(animate);
+        }, waitDuration);
+      }
+
+    } else if (state === 'waitBeforeExit') {
+      charEl.style.left = leftEdge + 'px';
+      contentEl.style.left = centerPos + 'px';
+
+    } else if (state === 'exit') {
+      const totalExitDuration = animDuration * 2;
+      const halfDuration = totalExitDuration / 2;
+      const charMid = centerPos - charWidth - gap;
+      const contentMid = centerPos;
+
+      if (elapsed <= halfDuration) {
+        const progress = elapsed / halfDuration;
+
+        const charPos = leftEdge + (charMid - leftEdge) * progress;
+        charEl.style.left = charPos + 'px';
+        charEl.style.transform = 'scaleX(1)';
+        contentEl.style.left = centerPos + 'px';
+
+        requestAnimationFrame(animate);
+
+      } else {
+        const progress = (elapsed - halfDuration) / halfDuration;
+
+        const charEnd = rightEdge;
+        const contentEnd = rightEdge + charWidth + gap;
+
+        const charPos = charMid + (charEnd - charMid) * progress;
+        const contentPos = contentMid + (contentEnd - contentMid) * progress;
+
+        charEl.style.left = charPos + 'px';
+        charEl.style.transform = 'scaleX(1)';
+        contentEl.style.left = contentPos + 'px';
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          charEl.style.left = charEnd + 'px';
+          contentEl.style.left = contentEnd + 'px';
+
+          setTimeout(() => {
+            let nextBanner, nextChar;
+            do {
+              nextBanner = Math.floor(Math.random() * retroBanners.length);
+            } while (nextBanner === currentBanner);
+
+            do {
+              nextChar = Math.floor(Math.random() * retroCharacters.length);
+            } while (nextChar === currentChar);
+
+            currentBanner = nextBanner;
+            currentChar = nextChar;
+
+            setBanner(currentBanner, currentChar);
+          }, 400);
+        }
+      }
+    }
+  }
+
+  // Início com sorteio inicial
+  currentBanner = Math.floor(Math.random() * retroBanners.length);
+  currentChar = Math.floor(Math.random() * retroCharacters.length);
+  setBanner(currentBanner, currentChar);
 </script>
 
 
+
+  
 
 
     
