@@ -319,22 +319,20 @@ const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
 let tileSize;
 
 function calculateTileSize() {
-  if (isMobile) {
-    return baseTileSize;
+  const baseTileSize = 40;
+  const width = window.innerWidth;
+
+  if (width >= 1920) {
+    return baseTileSize * 1.2;
+  } else if (width >= 1280 && width < 1920) {
+    const ratio = (width - 1280) / (1920 - 1280); // de 0 a 1
+    const proportionalSize = baseTileSize + (baseTileSize * 0.2 * ratio);
+    return proportionalSize * 1.2; // aplica +20% do valor já calculado
   } else {
-    // Desktop
-    if (width >= 1920) {
-      return baseTileSize * 1.2; // 48 (20% maior)
-    } else if (width >= 1280 && width < 1920) {
-      // proporcional entre 40 e 48
-      const ratio = (width - 1280) / (1920 - 1280);
-      return baseTileSize + (baseTileSize * 0.2 * ratio);
-    } else {
-      // largura menor que 1280px, usa tamanho base (40)
-      return baseTileSize;
-    }
+    return baseTileSize;
   }
 }
+
 
 let cols, rows, halfCols;
 let maze = [];
