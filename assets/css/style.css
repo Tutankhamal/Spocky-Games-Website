@@ -395,13 +395,12 @@ main {
 
 @media (max-width: 600px) {
   .cta-buttons {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .cta-button {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
     width: 100%;
-    font-size: 1rem;
-    padding: 14px 0;
+    font-size: 0.8rem;
+    
   }
 }
 
@@ -487,11 +486,12 @@ a.cta-button {
   filter: drop-shadow(0 0 20px var(--primary-color));
 }
 .advertise-btn {
-  padding: 12px 30px;
+  padding: 25px 50px;
   background-color: #0000006b;
   border: 2px solid var(--primary-color);
   color: var(--text-color);
   font-weight: 600;
+  font-size: 25px;
   border-radius: 5px;
   transition: all 0.3s ease;
   position: relative;
@@ -520,6 +520,18 @@ a.cta-button {
 
 .advertise-btn:hover::before {
   left: 100%;
+}
+
+@media (max-width: 600px) {
+  .advertise-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 1rem;
+  }
 }
 
 .hero-animate {
@@ -1958,42 +1970,66 @@ a.cta-button {
 
 .mission-vision {
     display: flex;
-    justify-content: center; /* Mantém os itens centralizados */
-    align-items: stretch; /* Garante altura uniforme */
-    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 80px 5%;
+    text-align: center;
+    flex-wrap: wrap;
 }
-
 
 .mission,
 .vision,
 .values {
-    flex: 1; /* Faz com que todos os blocos tenham o mesmo tamanho */
-    min-width: 300px; /* Garante que não fiquem muito pequenos */
-    background-color: rgba(32, 113, 160, 0.61); /* Fundo transparente */
+    flex: 1 1 min(300px, 100%);
     border-radius: 10px;
     padding: 30px;
-    text-align: center;
-    border: 1px solid #1dafba4f;
     transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px) !important;
     -webkit-backdrop-filter: blur(4px);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.mission:hover,
-.vision:hover,
+/* Cores e bordas individuais */
+.mission {
+    background-color: #beba1a66; /* beba1a com transparência */
+    border: 1.5px solid #beba1a;
+}
+
+.vision {
+    background-color: #8e1dc266; /* 8e1dc2 com transparência */
+    border: 1.5px solid #8e1dc2;
+}
+
+.values {
+    background-color: #1fb1be66; /* 1fb1be com transparência */
+    border: 1.5px solid #1fb1be;
+}
+
+/* Hover com glow e destaque de borda */
+.mission:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 25px #beba1a;
+    border-color: #beba1a;
+}
+
+.vision:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 25px #8e1dc2;
+    border-color: #8e1dc2;
+}
+
 .values:hover {
     transform: translateY(-10px);
-    box-shadow: var(--cyan-glow);
+    box-shadow: 0 0 25px #1fb1be;
+    border-color: #1fb1be;
 }
 
-.mission:hover { border-color: var(--secondary-color); }
-.vision:hover { border-color: var(--secondary-color); }
-.values:hover { border-color: var(--secondary-color); }
-
+/* Ícones e textos */
 .mission-icon,
 .vision-icon,
 .values-icon {
@@ -2016,15 +2052,10 @@ a.cta-button {
 
 /* Responsividade */
 @media (max-width: 900px) {
-    .mission-vision {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
     .mission,
     .vision,
     .values {
-        flex: 1 1 calc(50% - 20px); /* 2 por linha */
+        flex: 1 1 calc(50% - 20px);
     }
 }
 
@@ -2032,71 +2063,101 @@ a.cta-button {
     .mission,
     .vision,
     .values {
-        flex: 1 1 100%; /* Um por linha */
+        flex: 1 1 100%;
     }
 }
+
+
 
 
 .stats-section {
-    display: flex; /* Usa flexbox para distribuir os itens */
-    justify-content: space-between; /* Espaçamento uniforme entre os itens */
-    align-items: stretch; /* Mantém todos os itens com a mesma altura */
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 5%;
-    flex-wrap: wrap; /* Permite que os itens quebrem de linha quando necessário */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.stat-item {
-    flex: 1; /* Garante tamanhos iguais */
-    min-width: 300px; /* Define um tamanho mínimo para evitar itens muito pequenos */
-    background-color: #bcb60467; /* Mantém a transparência */
-    border-radius: 10px;
-    padding: 30px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+.stat-box {
+  flex: 1 1 250px;
+  padding: 30px;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: #fff;
+  border: 1px solid;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
 }
 
-.stat-item:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent-color);
-    box-shadow: var(--yellow-glow);
+.stat-box:hover {
+  transform: translateY(-6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stat-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  animation: scalePulse 2s infinite;
 }
 
 .stat-label {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.2rem;
+  font-size: 1.2rem;
+  opacity: 0.9;
 }
 
-/* Responsividade */
-@media (max-width: 900px) {
-    .stats-section {
-        justify-content: center;
-    }
-
-    .stat-item {
-        flex: 1 1 calc(50% - 20px); /* 2 por linha */
-    }
+.yellow-box {
+  border-color: #f9e214;
+  background-color: rgba(249, 226, 20, 0.452);
 }
 
-@media (max-width: 600px) {
-    .stat-item {
-        flex: 1 1 100%; /* Um por linha */
-    }
+.yellow-box:hover {
+  box-shadow: 0 0 20px #f9e214; /* Brilho amarelo */
+}
+
+.purple-box {
+  border-color: #a06cf5;
+  background-color: rgba(160, 108, 245, 0.452);
+}
+
+.purple-box:hover {
+  box-shadow: 0 0 20px #a06cf5; /* Brilho roxo */
+}
+
+.cyan-box {
+  border-color: #3ce5e5;
+  background-color: rgba(60, 229, 229, 0.452);
+}
+
+.cyan-box:hover {
+  box-shadow: 0 0 20px #3ce5e5; /* Brilho ciano */
+}
+
+.red-box {
+  border-color: #ff487a;
+  background-color: rgba(255, 72, 121, 0.452);
+}
+
+.red-box:hover {
+  box-shadow: 0 0 20px #ff487a; /* Brilho vermelho */
+}
+
+@keyframes scalePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-box {
+    flex: 1 1 100%;
+  }
 }
 
 /* Contact Section */
@@ -2527,10 +2588,7 @@ footer {
     font-size: 2.5rem;
   }
 
-  .cta-buttons {
-    flex-direction: column;
-    gap: 15px;
-  }
+
 
   .news-card {
     grid-column: span 12;
@@ -2821,7 +2879,7 @@ iframe {
 }
 @media (max-width: 900px) {
   .live-banner, .live-center-content { max-width: 100%; }
-  .advertise-btn { right: 1rem; }
+  
 }
 .big-live-player-box {
   width: 100vw;
@@ -3079,7 +3137,7 @@ iframe {
 }
 @keyframes pulse {
   0% { text-shadow: 0 0 8px #fff, 0 0 16px #0ff; }
-  100% { text-shadow: 0 0 24px #0ff, 0 0 32px #f0f; }
+  100% { text-shadow: 0 0 14px #0ff, 0 0 32px #f0f; }
 }
 
 
@@ -3484,7 +3542,8 @@ footer {
 /* CONTAINER FLEXÍVEL */
 .indexvideo-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Ajusta para 3 colunas em telas maiores, com um mínimo de 320px por item */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
   justify-content: center;
   align-items: center;
@@ -3493,13 +3552,15 @@ footer {
   width: 100%;
 }
 
+
 /* ITEM (CARD) */
 .indexvideo-item {
   background: rgba(190, 28, 58, 0.541);
   border: 1px solid #be1c39;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 4px #be1c3960;
+  box-shadow: 0 0 4px #be1c3960; /* Sombra inicial mais sutil */
+  /* Adiciona transição para box-shadow para o efeito de glow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
   max-width: 400px;
@@ -3507,8 +3568,10 @@ footer {
 }
 
 .indexvideo-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Efeito de ampliação suave */
+  box-shadow: 0 0 25px #be1c39; /* Efeito de glow mais pronunciado na cor do tema */
 }
+
 lite-youtube {
   background-color: #000;
   position: relative;
