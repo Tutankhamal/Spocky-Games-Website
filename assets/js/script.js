@@ -766,6 +766,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+const animatedContent2 = document.querySelectorAll('.animated-content2');
+
+const observer2 = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer2.unobserve(entry.target); // Opcional: para animar apenas uma vez
+        }
+    });
+}, {
+    threshold: 0.1 // Ajuste conforme a necessidade de visibilidade para disparar a animação
+});
+
+animatedContent2.forEach(element => {
+    observer2.observe(element);
+});
+
+
 
 // Partner Channers Carroussel
 

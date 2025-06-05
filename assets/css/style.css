@@ -621,6 +621,7 @@ a.cta-button {
 .latest-videos {
   padding: 80px 5%;
   text-align: center;
+  margin-bottom: 100px;
 }
 
 .featured-link {
@@ -2052,21 +2053,37 @@ a.cta-button {
 
 /* Responsividade */
 @media (max-width: 900px) {
-    .mission,
-    .vision,
-    .values {
-        flex: 1 1 calc(50% - 20px);
-    }
+  .mission,
+  .vision,
+  .values {
+      flex: 1 1 calc(50% - 20px);
+  }
 }
 
 @media (max-width: 600px) {
-    .mission,
-    .vision,
-    .values {
-        flex: 1 1 100%;
-    }
+  .mission,
+  .vision,
+  .values {
+      flex: 1 1 100%;
+  }
 }
 
+@media (max-width: 320px) {
+  .mission-vision {
+    padding: 40px 10px; /* Reduzir o padding horizontal para telas muito pequenas, mantendo um mínimo */
+    gap: 15px; /* Reduzir o espaçamento entre os itens */
+    box-sizing: border-box; /* Garantir que padding e border sejam incluídos na largura total */
+}
+
+  .mission,
+  .vision,
+  .values {
+      flex: 0 0 100%; /* Forçar que ocupem 100% da largura e não encolham */
+      max-width: 100%; /* Garantir que não ultrapassem a largura do pai */
+      padding: 20px; /* Ajustar o padding interno */
+      box-sizing: border-box; /* Garantir que padding e border sejam incluídos na largura total */
+  }
+}
 
 
 
@@ -2078,6 +2095,7 @@ a.cta-button {
   padding: 60px 5%;
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 100px;
 }
 
 .stat-box {
@@ -3279,16 +3297,16 @@ footer {
 /* Keyframes para os três sentidos restantes */
 @keyframes carBrakeLeft {
   0% {
-    transform: translateX(-150vw) skewX(-12deg);
-    opacity: 0;
+      transform: translateX(-100%) skewX(-12deg); /* Menos agressivo */
+      opacity: 0;
   }
   70% {
-    transform: translateX(25px) skewX(3deg);
-    opacity: 1;
+      transform: translateX(10px) skewX(3deg); /* Ajustar para um valor menor */
+      opacity: 1;
   }
   100% {
-    transform: translateX(0) skewX(0);
-    opacity: 1;
+      transform: translateX(0) skewX(0);
+      opacity: 1;
   }
 }
 
@@ -3309,18 +3327,46 @@ footer {
 
 @keyframes carBrakeTop {
   0% {
-    transform: translateY(-150vh) skewY(-12deg);
-    opacity: 0;
+      transform: translateY(-100%) skewY(-12deg); /* Menos agressivo */
+      opacity: 0;
   }
   70% {
-    transform: translateY(25px) skewY(3deg);
-    opacity: 1;
+      transform: translateY(10px) skewY(3deg); /* Ajustar para um valor menor */
+      opacity: 1;
   }
   100% {
-    transform: translateY(0) skewY(0);
-    opacity: 1;
+      transform: translateY(0) skewY(0);
+      opacity: 1;
   }
 }
+
+
+/* Animação para fade-in e zoom-in com recuo */
+@keyframes fadeInZoomInRecoil {
+  0% {
+      opacity: 0;
+      transform: scale(0.8);
+  }
+  80% {
+      opacity: 1;
+      transform: scale(1.05); /* Zoom um pouco maior */
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1); /* Recuo para o tamanho final */
+  }
+}
+
+.animated-content2 {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animated-content2.show {
+  animation: fadeInZoomInRecoil 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Ajuste o tempo e a curva conforme necessário */
+}
+
 
 
 .channel-carousel-section {
@@ -3533,10 +3579,11 @@ footer {
   margin-bottom: 1.5rem;
 }
 
-.indexvideo-title {
+.indexvideo-title { 
   font-size: 1.5rem;
   display: inline-block;
   text-align: center;
+  font-weight: bold;
 }
 
 /* CONTAINER FLEXÍVEL */

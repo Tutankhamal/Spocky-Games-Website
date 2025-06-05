@@ -125,9 +125,14 @@
               </div>   
             </section>
         
-        <section  class="featured-content animated-section">
-   <h2 class="section-title">Valores</h2>
-   <div class="animated-content">
+
+            
+
+
+
+  <section  class="featured-content animated-section">   
+   <div class="animated-content2">
+    <h2 class="section-title">Valores</h2>
       <div class="featured-grid">
          <div class="mission">
             <div class="mission-icon">
@@ -163,7 +168,8 @@
 </section>
 
                     
-          <section>          
+          <section>  
+          <div class="animated-content2">          
             <div class="stats-section">
               <div class="stat-box yellow-box">
                 <div class="stat-number pulse" id="subscriber-count">0</div>
@@ -182,7 +188,7 @@
                 <div class="stat-label">Idade do Canal</div>
               </div>
             </div>
-                   
+          </div>        
           </section>
         
 
@@ -295,9 +301,99 @@
 </script>
 
 
+<script>
+    function calcularIdadeCanal() {
+        const dataCriacao = new Date(2022, 10, 15); // 15 de novembro de 2022
+        const hoje = new Date();
+        
+        let anos = hoje.getFullYear() - dataCriacao.getFullYear();
+        let meses = hoje.getMonth() - dataCriacao.getMonth();
+        let dias = hoje.getDate() - dataCriacao.getDate();
 
-<script src="/js/spocky-youtube-stats.js"></script>
+        if (dias < 0) {
+            meses--;
+            const ultimoDiaMesAnterior = new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
+            dias += ultimoDiaMesAnterior;
+        }
 
+        if (meses < 0) {
+            anos--;
+            meses += 12;
+        }
+
+        document.getElementById("statNumber").innerText = `${anos} anos ${meses} meses e ${dias} dias`;
+    }
+
+    window.onload = calcularIdadeCanal;
+</script>
+
+
+<script>
+
+
+</script>
+<script>
+  function animateCount(id, end, suffix = '', duration = 2000) {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    let start = 0;
+    const startTime = performance.now();
+    const step = (timestamp) => {
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const value = Math.floor(progress * end);
+      el.textContent = value.toLocaleString() + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = end.toLocaleString() + suffix;
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  function animateAgeText(text, el) {
+    el.textContent = '';
+    let i = 0;
+    const interval = setInterval(() => {
+      el.textContent += text[i];
+      i++;
+      if (i >= text.length) clearInterval(interval);
+    }, 50);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const statsSection = document.querySelector('.stats-section');
+    let alreadyAnimated = false;
+
+    if (statsSection) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !alreadyAnimated) {
+              alreadyAnimated = true;
+
+              animateCount('subscriber-count', 5800, '+');
+              animateCount('view-count', 1000000, '+');
+              animateCount('video-count', 1200, '+');
+
+              const ageText = '2 anos 6 meses e 21 dias';
+              const ageEl = document.getElementById('statNumber');
+              if (ageEl) animateAgeText(ageText, ageEl);
+
+              obs.disconnect(); // para de observar após a primeira vez
+            }
+          });
+        },
+        {
+          threshold: 0.6 // ativa quando 60% da seção estiver visível
+        }
+      );
+
+      observer.observe(statsSection);
+    }
+  });
+</script>
 
 
 
