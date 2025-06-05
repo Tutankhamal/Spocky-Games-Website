@@ -2988,7 +2988,7 @@ iframe {
   height: 72px;
   display: flex;
   align-items: flex-end;
-  z-index: 9999;
+  z-index: 4;
   pointer-events: none;
   transition: left 0.3s ease-in-out;
 }
