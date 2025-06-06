@@ -786,26 +786,26 @@ animatedContent2.forEach(element => {
 // Partner Channers Carroussel
 
 const partnerData = [
-  { name: "Defenestrando Jogos", url: "https://www.youtube.com/@defenestrandojogos", img: "/assets/images/partnerch/defenestrando.jpg" },
-  { name: "Canal Maddrugamers", url: "https://www.youtube.com/@maddrugamers", img: "/assets/images/partnerch/maddrugamers.jpg" },
-  { name: "Direto dos Consoles", url: "https://www.youtube.com/@DiretodosConsoles", img: "/assets/images/partnerch/diretodosconsoles.jpg" },
-  { name: "Retrozera", url: "https://www.youtube.com/@Retrozera", img: "/assets/images/partnerch/retrozera.jpg" },
-  { name: "Detona Bits", url: "https://www.youtube.com/@Detonabits", img: "/assets/images/partnerch/detonabits.jpg" },
-  { name: "Joga+", url: "https://www.youtube.com/@alan.jogamais", img: "/assets/images/partnerch/jogamais.jpg" },
-  { name: "Gameplay Br", url: "https://www.youtube.com/@gameplaybr1746", img: "/assets/images/partnerch/gameplaybr.jpg" },
-  { name: "GuaxaZX", url: "https://www.youtube.com/@GuaxaZX", img: "/assets/images/partnerch/guaxazx.jpg" },
-  { name: "Nostal GAMES Retro", url: "https://www.youtube.com/@nostalgamesretro", img: "/assets/images/partnerch/nostalgamesretro.jpg" },
-  { name: "Jana Gamer", url: "https://www.youtube.com/@JanaGamer", img: "/assets/images/partnerch/janagamer.jpg" },
-  { name: "Anielleom", url: "https://www.youtube.com/@anielleom", img: "/assets/images/partnerch/anielleom.jpg" },
-  { name: "Mina dos Games (Amanda Nicoly)", url: "https://www.youtube.com/@minadosgamesamandanicoly6493", img: "/assets/images/partnerch/minadosgames.jpg" },
-  { name: "Attomic Games TV", url: "https://www.youtube.com/@Attomicgames", img: "/assets/images/partnerch/attomicgames.jpg" },
-  { name: "OpassadoRecentedosGames", url: "https://www.youtube.com/@OpassadoRecenteDosGames", img: "/assets/images/partnerch/opassadorecente.jpg" },
-  { name: "Gorilas Sisters", url: "https://www.youtube.com/@GorilasSisters", img: "/assets/images/partnerch/gorilassisters.jpg" },
-  { name: "Games das antigas", url: "https://www.youtube.com/@Gamesdasantigas", img: "/assets/images/partnerch/gamesdasantigas.jpg" },
-  { name: "MiRiNiOR GAMES", url: "https://www.youtube.com/@MiRiNiOR", img: "/assets/images/partnerch/miriniorgames.jpg" },
-  { name: "Fernando Lucas", url: "https://www.youtube.com/@fernando_lcs", img: "/assets/images/partnerch/fernandolucas.jpg" },
-  { name: "Toloi Games", url: "https://www.youtube.com/@ToloiGames", img: "/assets/images/partnerch/toloigames.jpg" },
-  { name: "Creative Games", url: "https://www.youtube.com/@CreativeGamesOficial", img: "/assets/images/partnerch/creativegames.jpg" }
+  { name: "Defenestrando Jogos", url: "https://www.youtube.com/@defenestrandojogos", img: "/assets/images/partnerch/defenestrando.webp" },
+  { name: "Canal Maddrugamers", url: "https://www.youtube.com/@maddrugamers", img: "/assets/images/partnerch/maddrugamers.webp" },
+  { name: "Direto dos Consoles", url: "https://www.youtube.com/@DiretodosConsoles", img: "/assets/images/partnerch/diretodosconsoles.webp" },
+  { name: "Retrozera", url: "https://www.youtube.com/@Retrozera", img: "/assets/images/partnerch/retrozera.webp" },
+  { name: "Detona Bits", url: "https://www.youtube.com/@Detonabits", img: "/assets/images/partnerch/detonabits.webp" },
+  { name: "Alan Joga+", url: "https://www.youtube.com/@alan.jogamais", img: "/assets/images/partnerch/jogamais.webp" },
+  { name: "Gameplay Br", url: "https://www.youtube.com/@gameplaybr1746", img: "/assets/images/partnerch/gameplaybr.webp" },
+  { name: "GuaxaZX", url: "https://www.youtube.com/@GuaxaZX", img: "/assets/images/partnerch/guaxazx.webp" },
+  { name: "Nostal GAMES Retro", url: "https://www.youtube.com/@nostalgamesretro", img: "/assets/images/partnerch/nostalgamesretro.webp" },
+  { name: "Jana Gamer", url: "https://www.youtube.com/@JanaGamer", img: "/assets/images/partnerch/janagamer.webp" },
+  { name: "Anielleom", url: "https://www.youtube.com/@anielleom", img: "/assets/images/partnerch/anielleom.webp" },
+  { name: "Mina dos Games (Amanda Nicoly)", url: "https://www.youtube.com/@minadosgamesamandanicoly6493", img: "/assets/images/partnerch/minadosgames.webp" },
+  { name: "Attomic Games TV", url: "https://www.youtube.com/@Attomicgames", img: "/assets/images/partnerch/attomicgames.webp" },
+  { name: "OpassadoRecentedosGames", url: "https://www.youtube.com/@OpassadoRecenteDosGames", img: "/assets/images/partnerch/opassadorecente.webp" },
+  { name: "Gorilas Sisters", url: "https://www.youtube.com/@GorilasSisters", img: "/assets/images/partnerch/gorilassisters.webp" },
+  { name: "Games das antigas", url: "https://www.youtube.com/@Gamesdasantigas", img: "/assets/images/partnerch/gamesdasantigas.webp" },
+  { name: "MiRiNiOR GAMES", url: "https://www.youtube.com/@MiRiNiOR", img: "/assets/images/partnerch/miriniorgames.webp" },
+  { name: "Fernando Lucas", url: "https://www.youtube.com/@fernando_lcs", img: "/assets/images/partnerch/fernandolucas.webp" },
+  { name: "Toloi Games", url: "https://www.youtube.com/@ToloiGames", img: "/assets/images/partnerch/toloigames.webp" },
+  { name: "Creative Games", url: "https://www.youtube.com/@CreativeGamesOficial", img: "/assets/images/partnerch/creativegames.webp" }
 ];
 
 const container = document.querySelector(".channel-carousel-container");
