@@ -319,20 +319,29 @@ const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
 let tileSize;
 
 function calculateTileSize() {
-  const baseSize = 25; // base para celular
-  const maxTileSize = 40; // máximo para desktop
+  const minSize = 24;  // menor tamanho permitido (celulares estreitos)
+  const baseSize = 37; // tamanho padrão para celular
+  const maxSize = 48;  // limite superior (monitores grandes)
+
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const isLandscape = screenWidth > screenHeight;
 
-  // Se landscape e largura maior que 768px (tablet/desktop), aumenta tileSize 20~30%
-  if (screenWidth >= 768) {
-    // Pode ajustar a porcentagem aqui
-    return Math.min(maxTileSize, baseSize * 1.9);
+  let size;
+
+  if (screenWidth >= 1024) {
+    // Desktop
+    size = baseSize * 1.3;
+  } else if (screenWidth >= 768) {
+    // Tablet
+    size = baseSize * 1.5;
   } else {
-    // Para celular retrato, base normal
-    return baseSize;
+    // Celular
+    size = baseSize;
   }
+
+  // Garante que está dentro dos limites definidos
+  return Math.max(minSize, Math.min(size, maxSize));
 }
 
 
