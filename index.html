@@ -303,17 +303,16 @@
 
 <script>
     function calcularIdadeCanal() {
-        const dataCriacao = new Date(2022, 10, 15); // 15 de novembro de 2022
+        const dataCriacao = new Date(2022, 10, 15); // Mês é 0-indexed (10 para Novembro)
         const hoje = new Date();
-        
+
         let anos = hoje.getFullYear() - dataCriacao.getFullYear();
         let meses = hoje.getMonth() - dataCriacao.getMonth();
         let dias = hoje.getDate() - dataCriacao.getDate();
 
         if (dias < 0) {
             meses--;
-            const ultimoDiaMesAnterior = new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
-            dias += ultimoDiaMesAnterior;
+            dias += new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
         }
 
         if (meses < 0) {
@@ -321,10 +320,10 @@
             meses += 12;
         }
 
-        document.getElementById("statNumber").innerText = `${anos} anos ${meses} meses e ${dias} dias`;
+        return `${anos} anos ${meses} meses e ${dias} dias`; // Modificado para retornar a string
     }
 
-    window.onload = calcularIdadeCanal;
+    // window.onload = calcularIdadeCanal; // Removido
 </script>
 
 
@@ -377,9 +376,11 @@
               animateCount('view-count', 1000000, '+');
               animateCount('video-count', 1200, '+');
 
-              const ageText = '2 anos 6 meses e 21 dias';
               const ageEl = document.getElementById('statNumber');
-              if (ageEl) animateAgeText(ageText, ageEl);
+              if (ageEl) {
+                const ageText = calcularIdadeCanal(); // Calcula a idade dinamicamente
+                animateAgeText(ageText, ageEl); // Usa a idade dinâmica na animação
+              }
 
               obs.disconnect(); // para de observar após a primeira vez
             }
