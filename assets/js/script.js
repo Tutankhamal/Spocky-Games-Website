@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelector(".nav-links")
   const faqItems = document.querySelectorAll(".faq-item")
   const partnerCards = document.querySelectorAll(".partner-card")
-  const modalOverlay = document.querySelector(".modal-overlay")
-  const closeModal = document.querySelector(".close-modal")
   const filterButtons = document.querySelectorAll(".filter-button")
   let lastScrollTop = 0
 
