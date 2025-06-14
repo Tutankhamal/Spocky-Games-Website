@@ -1316,6 +1316,19 @@ a.cta-button {
   gap: 15px;
 }
 
+/* Estilo base para todos os ícones sociais */
+.social-icon {
+  display: inline-flex; /* Para alinhar ícone e texto, se houver */
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Tamanho do ícone */
+  height: 40px; /* Tamanho do ícone */
+  border-radius: 50%; /* Para torná-los circulares */
+  text-decoration: none;
+  font-size: 1.2rem; /* Tamanho do ícone da fonte, ajuste conforme necessário */
+  transition: all 0.3s ease;
+  /* Adicione aqui outras propriedades base que você tinha, como margens, etc. */
+}
 
 .social-icon:hover {
   transform: translateY(-5px) scale(1.1);
@@ -1344,8 +1357,8 @@ a.cta-button {
 }
 
 .social-icon.github {
-  color: #000000;
-  border: 2px solid #010409;
+  color: #000000; /* Ou uma cor mais clara se o fundo for escuro, ex: #e0e0e0 */
+  border: 2px solid #010409; /* Ou uma cor de borda correspondente */
 }
 
 .social-icon.github:hover {
@@ -1362,7 +1375,7 @@ a.cta-button {
 .social-icon.whatsapp:hover {
   background-color: #25d366;
   color: #fff;
-  box-shadow: 0 0 15px rgba(114, 218, 137, 0.7);
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.7);
 }
 
 .social-icon.instagram {
@@ -1476,7 +1489,7 @@ a.cta-button {
 }
 
 .social-icon.tiktok {
-  color: #ee1d52;
+  color: #ee1d52; /* Cor oficial do TikTok */
   border: 2px solid #ee1d52;
 }
 
